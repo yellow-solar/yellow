@@ -10,7 +10,6 @@ import itertools
 import sqlite3
 import requests
 from requests.auth import HTTPBasicAuth
-import csv
 from io import StringIO
 
 # Pandas options
@@ -83,7 +82,7 @@ for f in os.listdir(data_path+'/'):
         account_data = pd.read_csv(data_path+'/'+f, parse_dates = acc_date_cols)
         account_data['account_timestamp'] = month_key+'01'
         accounts_per_month = accounts_per_month.append(account_data[account_columns+['account_timestamp']])
-    elif re.search("pay", f):
+    elif re.search("payments.csv", f):
         payments_data = pd.read_csv(data_path+'/'+f, parse_dates = pay_date_cols)[payment_columns]
         payments_data['reversal_amount'] = payments_data.amount*(~payments_data.reversal.isna()*1)
         payments_data['amount'] = payments_data.amount*(payments_data.reversal.isna()*1)
@@ -112,7 +111,7 @@ payments_data['recorded_date'] = payments_data.recorded_utc.dt.strftime('%Y-%m-%
 # July and September 2018 are missing on the angaza links - therefore use the minimum date at which the account appears
 account_at_registration = accounts_per_month.groupby(['angaza_id']).aggregate({'month_key':'min'}).reset_index()
 account_at_registration = account_at_registration.merge(accounts_per_month,on=['angaza_id','month_key'])
-account_at_registration = account_at_registration[['angaza_id','registration_date_utc','registration_date','registration_month','upfront_price']]
+account_at_registration = account_at_registration[['angaza_id','registration_date_utc','registration_date','registration_month','upfront_price','group_name']]
 
 # --If you had all the data you could do this where you select rows where account registration year and month is the dataset year and month 
 # accounts_per_month[(accounts_per_month.month_key.dt.month == accounts_per_month.registration_date_utc.dt.month) &
@@ -221,7 +220,7 @@ payment_periods_step = pd.read_sql_query("select * from payment_periods_step",co
 payment_periods_step['EffectiveFrom'] = pd.to_datetime(payment_periods_step.EffectiveFrom)
 payment_periods_step['EffectiveTo'] = (pd.to_datetime(payment_periods_step.groupby('AngazaID')['EffectiveFrom'].shift(-1)) - pd.to_timedelta(1,unit='S'))
 payment_periods_step['EffectiveTo'] = payment_periods_step.EffectiveTo.fillna(today_ts)
-payment_periods_step['EffectiveDays'] = ((payment_periods_step.EffectiveTo - payment_periods_step.EffectiveFrom)) / timedelta (days=1)
+payment_periods_step['EffectiveDays'] = (payment_periods_step.EffectiveTo - payment_periods_step.EffectiveFrom).dt.days.round(2)
 payment_periods_step['CumEffectiveDaysEnd'] = payment_periods_step.groupby(['AngazaID']).aggregate({'EffectiveDays':'cumsum'})
 payment_periods_step['CumEffectiveDaysStart'] = payment_periods_step.CumEffectiveDaysEnd - payment_periods_step.EffectiveDays 
 
@@ -239,19 +238,14 @@ q = '''
         end_payment_period_utc PPEndTimestamp,
         r.registration_date_utc RegistrationTimestamp,
         m.date_of_repossession_utc RepossessionTimestamp,
+        m.group_name PaymentGroup,
         m.account_number AccountNumber,
         m.previous_account_number PreviousAccountNumber,
         r.upfront_price UpfrontPrice,
         m2.unlock_price UnlockPrice,
         m.minimum_payment_amount/1.0 PeriodMPA,
-        case when p2.Amount >= m2.unlock_price then m2.unlock_price else p2.amount end DepositAmount,
-        case when p2.Amount >= m2.unlock_price  then 1 else 0 end CashSale,
-        coalesce(case 
-                    when r.registration_date_utc = EffectiveFrom and p2.Amount >= m.unlock_price then 0
-                    when r.registration_date_utc = EffectiveFrom and p2.Amount > m.upfront_price then p2.amount - r.upfront_price 
-                    else p.amount
-                  end
-                 ,0) AmountPaid,
+        case when r.group_name in ('Biolite - Urban or Rural - Cash Upfront') then 1 else 0 end CashSale,
+        coalesce(p.amount,0) AmountPaid,
         p.reversal Reversal,
         m.account_timestamp AccountDataTimestamp
         
@@ -276,7 +270,7 @@ q = '''
     left join payments p
         on pp.AngazaID = p.angaza_id
         and pp.EffectiveFrom = p.effective_utc 
-        and p.effective_utc <> r.registration_date_utc
+    --    and p.effective_utc <> r.registration_date_utc
     
     left join (select i.angaza_id,
                         i.effective_utc, 
@@ -292,7 +286,8 @@ q = '''
 df = pd.read_sql_query(q,conn, parse_dates=['EffectiveFrom','EffectiveTo','PPStartTimestamp','PPEndTimestamp','RegistrationTimestamp']).sort_values(['AngazaID','EffectiveFrom']).reset_index(drop=True)
 
 # Fill previous months that were missing 
-df[['AccountNumber','PreviousAccountNumber','UnlockPrice','PeriodMPA']] = df.groupby('AngazaID')[['AccountNumber','PreviousAccountNumber','UnlockPrice','PeriodMPA']].ffill().drop('AngazaID',axis=1)
+df[['AccountNumber','PreviousAccountNumber','UnlockPrice','PeriodMPA','AccountDataTimestamp']] = df.groupby('AngazaID')[['AccountNumber','PreviousAccountNumber','UnlockPrice','PeriodMPA','AccountDataTimestamp']].ffill().bfill()
+len(df[df.PeriodMPA.isna()].index)
 
 # Calculate a cumulative owed amount
 # Needs to be calculated based on days passed and the Monthly payment amount
@@ -315,11 +310,13 @@ df['Payment'] = 1*(df.AmountPaid>0)
 df['CumPaid'] = df.groupby(['AngazaID']).aggregate({'AmountPaid':'cumsum'})
 df['PrevCumPaid'] = df['CumPaid'] - df['AmountPaid']
 df['CumPaidMonth'] = df.groupby(['AngazaID','PPEndTimestamp']).aggregate({'AmountPaid':'cumsum'}).fillna(0)
-df['TotalPaid'] = df.CumPaid + df.DepositAmount
+df['CumPaidLessUpfront'] = df['CumPaid'] - df['UpfrontPrice']
+df['DepositPaidInd'] = (df['CumPaidLessUpfront']>=0)*1
+# df['TotalPaid'] = df.CumPaid + df.DepositAmount
 
 # TO BE ADDED TO THE SQL FOR FUTURE
 # Get the unlock date and merge to the dataset to filter out after unlock
-df['Unlocked'] = 1*(df.TotalPaid >= df.UnlockPrice)
+df['Unlocked'] = 1*(df.CumPaid >= df.UnlockPrice)
 Unlocked = df.groupby(['AngazaID','Unlocked']).aggregate({'EffectiveFrom':'min'}).reset_index()
 Unlocked = Unlocked[Unlocked.Unlocked == 1].rename(columns = {'EffectiveFrom':'UnlockDate'}).reset_index(drop=True)
 df = df.merge(Unlocked[['AngazaID','UnlockDate']], how='left')
@@ -329,8 +326,8 @@ df = df[(df.EffectiveFrom <= df.UnlockDate) | (df.UnlockDate.isna())]
 
 
 # Days calculations
-df['DaysPaid'] = 30+(df.CumPaid/(df.PeriodMPA/30)).fillna(0)
-df['DaysPaidStart'] = (30+df.PrevCumPaid/(df.PeriodMPA/30)).fillna(0)
+df['DaysPaid'] = (30 +(df.CumPaidLessUpfront/(df.PeriodMPA/30)))*df.DepositPaidInd.round(2)
+# df['DaysPaidStart'] = 30*df.DepositAmount+(df.PrevCumPaid/(df.PeriodMPA/30)).fillna(0)
 
 df['ArrearsIndicator'] = (df.DaysPaid < df.CumEffectiveDaysEnd)*1
 df['DaysInArrearsEnd'] = (df.CumEffectiveDaysEnd - df.DaysPaid)*df.ArrearsIndicator
@@ -366,12 +363,12 @@ end_of_period_only = df[(df.PPEndTimestamp == df.EffectiveTo)].copy()
 
 end_of_period_only = end_of_period_only[['AngazaID','PPStartTimestamp','PPEndTimestamp','CumEffectiveDaysEnd',
                                          'RegistrationTimestamp','RepossessionTimestamp',
-                                         'AccountNumber', 'PreviousAccountNumber','AccountDataTimestamp',
+                                         'AccountNumber', 'PreviousAccountNumber','AccountDataTimestamp','PaymentGroup',
                                          'UpfrontPrice', 'UnlockPrice', 'PeriodMPA', 
-                                         'DepositAmount', 'CashSale','CumPaid', 'PrevCumPaid',
-                                         'DaysPaid','DaysPaidStart','DaysEnabledEnd',
-                                         'ArrearsIndicator','DaysInArrearsEnd',
-                                         'TotalPaid', 'Unlocked', 'UnlockDate',
+                                         'CashSale','CumPaid', 'PrevCumPaid','CumPaidLessUpfront',
+                                         'DaysPaid','DaysEnabledEnd',
+                                         'ArrearsIndicator','DaysInArrearsEnd', 
+                                         'Unlocked', 'UnlockDate',
                                          'PaymentTrackingEnd', 'CodeStatus']]
 end_of_period_only['NextCodeStatus'] = end_of_period_only.groupby('AngazaID')['CodeStatus'].shift(-1)
 
@@ -458,7 +455,6 @@ account_periods['DoloTier'] = account_periods.apply(DoloScore, axis=1)
 tiers = [0,1,2,3,4,5]
 tier_names = ['Mulibe Moto','Moto Ochepa','Moto Wapakati','Moto Wochuluka','Dolo wa Yellow!']
 account_periods['DoloStatus'] = pd.cut(account_periods.DoloTier, tiers, labels=tier_names)
-
 
 # Create new dataset for live row - including date of unlock, repossession - use max PP end timestamp for each angazaID
 max_ts_per_id = account_periods.groupby('AngazaID')['PPEndTimestamp'].max().reset_index().rename(columns ={'PPEndTimestamp':'MaxPPEndTimestamp'})

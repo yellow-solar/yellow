@@ -10,7 +10,6 @@ import itertools
 import sqlite3
 import requests
 from requests.auth import HTTPBasicAuth
-import csv
 from io import StringIO
 
 # Pandas options
@@ -48,7 +47,7 @@ for APIname in APIs.keys():
     snapshot = requests.get(base_url+APIs[APIname], auth=HTTPBasicAuth(username, password))
     if snapshot.status_code == 200:
         print("Request successful. Storing csv...")
-        snapshot_df = pd.read_csv(StringIO(snapshot.text)).replace('None',np.NaN) 
+        snapshot_df = pd.read_csv(StringIO(snapshot.content.decode('utf-8'))).replace('None',np.NaN) 
         snapshot_df.to_csv(data_path+APIs[APIname]+'.csv', index=False)
     else:
         raise ValueError()
@@ -62,7 +61,7 @@ print('Running account snapshots check...')
 
 # Create list of currently downloaded months
 month_keys_downloaded = []
-for f in os.listdir(data_path + '/'):
+for f in os.listdir(data_path):
      if re.search("[0-9]{6}", f):
         month_key = re.findall("[0-9]{6}", f)[0]
         month_keys_downloaded.append(month_key)
@@ -83,7 +82,7 @@ for month in month_keys:
         
         # if request raised successfully
         if accounts.status_code == 200:
-            account_data = pd.read_csv(StringIO(accounts.text)).replace('None',np.NaN)
+            account_data = pd.read_csv(StringIO(accounts.content.decode('utf-8'))).replace('None',np.NaN)
             account_data.to_csv(data_path+'/accounts '+month+'.csv', index=False)
             print("Downloaded: " + month)
         # if return status not 200, raise exception on value
