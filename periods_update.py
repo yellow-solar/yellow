@@ -22,7 +22,7 @@ today_ts = pd.to_datetime('today').round('1s')
 today_string = pd.to_datetime('today').strftime('%Y-%m-%d')
 
 # Path to data
-data_path = '../data'
+data_path = 'data'
 
 # Custom Functions 
 def AreaBelowTriangles(start,end,eff_period):
@@ -71,6 +71,9 @@ account_columns = ['account_number','previous_account_number','angaza_id','owner
 payment_columns = ['angaza_id','account_number','account_angaza_id','type','down_payment','effective_utc','recorded_utc','amount','phone','payment_note','reversal','reversal_note']
 acc_date_cols = ['date_of_latest_payment_utc','date_of_disablement_utc','registration_date_utc', 'date_of_repossession_utc']
 pay_date_cols = ['effective_utc','recorded_utc']
+
+# Print current path
+print(os.listdir())
 
 # Import account and payments data
 accounts_per_month = pd.DataFrame()

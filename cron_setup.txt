@@ -1,0 +1,2 @@
+0 */3 * * * ~/.venv/data-jobs/bin/python ~/prod-jobs/data_update.py > ~/.log/data_update.log 2>&1
+15 */3 * * * ~/.venv/data-jobs/bin/python ~/prod-jobs/periods_update.py > ~/.log/periods_update.log 2>&1

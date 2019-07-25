@@ -23,7 +23,7 @@ today_string = pd.to_datetime('today').strftime('%Y-%m-%d')
 current_month_key = pd.to_datetime('today').strftime('%Y%m')
 
 # Path to data
-data_path = '../data'
+data_path = 'data'
 
 # Angaza user and password
 username = 'mike@pacafrica.co.za'

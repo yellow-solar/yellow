@@ -1,2 +1,0 @@
-45 * * * * ~/Projects/.venv/data-jobs/bin/python ~/Projects/prod-jobs/data_update.py >/dev/null 2>&1
-55 * * * * ~/Projects/.venv/data-jobs/bin/python ~/Projects/prod-jobs/periods_update.py >/dev/null 2>&1
