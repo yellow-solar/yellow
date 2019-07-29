@@ -26,7 +26,7 @@ t1 = datetime.now()
 
 # Delete all personal details records
 # delete = formDelete(form, zoho)
-delete = zoho.add("API_triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
+delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
 
 # Upload personal details table
 if delete.status_code==200:
