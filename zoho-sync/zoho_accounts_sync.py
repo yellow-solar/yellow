@@ -13,10 +13,10 @@ print(form + " upload sync:", datetime.now().strftime("%H:%M:%S"))
 zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-management')
 
 ### Accounts table
-# Import column headers for accounts
-accounts_header = pd.read_csv('headers/account_headers.csv').replace("&","and",regex=True)
 # Import accounts and reformat write-off heading
-accounts = pd.read_csv('../data/accounts.csv')
+accounts = pd.read_csv('../data/accounts.csv').replace("&","and",regex=True)
+# Import column headers for accounts
+accounts_header = pd.read_csv('headers/accounts_header.csv')
 # Rename angaza col name to Zoho col name 
 accounts = accounts.rename(columns={'date_of_write-off':'date_of_write_off'})
 # Fill NULL values with blank strings
