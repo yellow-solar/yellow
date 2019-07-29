@@ -21,4 +21,4 @@ Error: 400 - see rpc request text for more detail
 {"code":2945,"message":"PATTERN_NOT_MATCHED"
 
 
-<response><errorlist><error><code>2830</code><message><![CDATA[The reference to entity "sweet" must end with the \';\' delimiter.]]></message></error><errorlist></response>\n'
+<response><errorlist><error><code>2830</code><message><![CDATA[The reference to entity "sweet" must end with the \';\' delimiter.]]></message></error><errorlist></response>'
