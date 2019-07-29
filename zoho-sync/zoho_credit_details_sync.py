@@ -34,7 +34,7 @@ t1 = datetime.now()
 # delete = formDelete(form=form, zoho=zoho)
 delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
 
-time.sleep(5)
+time.sleep(25)
 
 # Upload credit details table
 if delete.status_code==200:

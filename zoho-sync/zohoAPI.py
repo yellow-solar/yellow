@@ -93,7 +93,7 @@ def formDelete(form, zoho):
     else:
         print("Error. See status code:")
         print(delete_request.status_code)
-
+    time.sleep(5)
     return(delete_request)        
 
 # General syncronous method
@@ -132,7 +132,8 @@ def dfUploadSync(df, form, zoho, slice_length=500):
             print("Error: " + str(rpc_request.status_code) + " - see rpc request text for more detail")
             print(rpc_request.text)
             raise ValueError("Request number " + str(response_count) + " failed")
-    
-    time.sleep(1.5)
+   	# Wait 5 seconds after each request to give it time to update in Zoho 
+    	time.sleep(5)
+
     print("Completed request.")       
     return(responses)
