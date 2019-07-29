@@ -31,7 +31,7 @@ t1 = datetime.now()
 
 # Delete accounts data
 # delete = formDelete(form, zoho)
-delete = zoho.add("API_triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
+delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
 
 # Run the synchronous XML upload with slide length of 500 rows
 if delete.status_code==200:

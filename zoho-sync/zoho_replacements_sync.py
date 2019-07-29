@@ -24,7 +24,7 @@ t1 = datetime.now()
 
 # Delete all records
 # delete = formDelete(form=form, zoho=zoho)
-delete = zoho.add("API_triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
+delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
 
 # Upload table
 if delete.status_code==200:
