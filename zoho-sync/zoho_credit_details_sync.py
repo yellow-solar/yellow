@@ -15,7 +15,7 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 ### Prospects
 # Angaza table import
-prospects = pd.read_csv('../data/prospects.csv')
+prospects = pd.read_csv('../data/prospects.csv').replace("&","and",regex=True)
 # Header tables
 header = pd.read_csv('headers/applications_credit_details_header.csv')
 
@@ -33,8 +33,6 @@ t1 = datetime.now()
 # Delete all credit details records
 # delete = formDelete(form=form, zoho=zoho)
 delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
-
-time.sleep(25)
 
 # Upload credit details table
 if delete.status_code==200:

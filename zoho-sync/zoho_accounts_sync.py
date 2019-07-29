@@ -14,7 +14,7 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 ### Accounts table
 # Import column headers for accounts
-accounts_header = pd.read_csv('headers/account_headers.csv')
+accounts_header = pd.read_csv('headers/account_headers.csv').replace("&","and",regex=True)
 # Import accounts and reformat write-off heading
 accounts = pd.read_csv('../data/accounts.csv')
 # Rename angaza col name to Zoho col name 

@@ -12,13 +12,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from io import StringIO
 
-
-# Pandas options
-pd.set_option('display.max_rows', 150)
-pd.set_option('display.max_columns', 50)
-# pd.set_option('display.float_format', lambda x: "%.2" % x)
-# pd.set_option('display.width', 1000)
-
+# Dates and Timestamps
 today_ts = pd.to_datetime('today').round('1s')
 today_string = pd.to_datetime('today').strftime('%Y-%m-%d')
 current_month_key = pd.to_datetime('today').strftime('%Y%m')
@@ -48,13 +42,15 @@ APIs = {'clients':'/clients',
 
 for APIname in APIs.keys():
     print('Requesting from: ' + APIname)
+
+    # Snapshot 
     snapshot = requests.get(base_url+APIs[APIname], auth=HTTPBasicAuth(username, password))
     if snapshot.status_code == 200:
         print("Request successful. Storing csv...")
         snapshot_df = pd.read_csv(StringIO(snapshot.content.decode('utf-8'))).replace('None',np.NaN) 
         snapshot_df.to_csv(data_path+APIs[APIname]+'.csv', index=False)
     else:
-        raise ValueError()
+        raise ValueError("Request to " + APIname + " failed with error code: " + str(snapshot.status_code))
     if APIname == 'accounts':
         snapshot_df.to_csv(data_path + '/'+'accounts '+ current_month_key +'.csv', index=False)
 

@@ -14,7 +14,7 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 # Import dolo scores and format for upload
 accounts_enriched = pd.read_csv('../data/accounts_enriched.csv')
-dolo_update_data = accounts_enriched[['AngazaID','DoloTier']].rename(columns = {'AngazaID':'Angaza_ID','DoloTier':'Dolo_Tier'})
+dolo_update_data = accounts_enriched[['AngazaID','DoloTier']].rename(columns = {'AngazaID':'Angaza_ID','DoloTier':'Dolo_Tier'}).replace("&","and",regex=True)
 
 
 # Time this whole thing

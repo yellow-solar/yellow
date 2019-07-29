@@ -13,7 +13,7 @@ print(form + " upload sync:", datetime.now().strftime("%H:%M:%S"))
 zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-management')
 
 # Angaza table import
-agents_data = pd.read_csv('../data/agents.csv')
+agents_data = pd.read_csv('../data/agents.csv').replace("&","and",regex=True)
 # Header tables
 header = pd.read_csv('headers/agents_header.csv')
 

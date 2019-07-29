@@ -14,7 +14,7 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 ### Prospects
 # Angaza table import
-prospects = pd.read_csv('../data/prospects.csv')
+prospects = pd.read_csv('../data/prospects.csv').replace("&","and",regex=True)
 # Header tables
 app_personal_details_header = pd.read_csv('headers/applications_personal_details_header.csv')
 # Personal details table tables
