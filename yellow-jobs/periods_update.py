@@ -22,7 +22,7 @@ today_ts = pd.to_datetime('today').round('1s')
 today_string = pd.to_datetime('today').strftime('%Y-%m-%d')
 
 # Path to data
-data_path = 'data'
+data_path = '../data'
 
 # Custom Functions 
 def AreaBelowTriangles(start,end,eff_period):

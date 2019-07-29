@@ -12,6 +12,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from io import StringIO
 
+
 # Pandas options
 pd.set_option('display.max_rows', 150)
 pd.set_option('display.max_columns', 50)
@@ -22,8 +23,11 @@ today_ts = pd.to_datetime('today').round('1s')
 today_string = pd.to_datetime('today').strftime('%Y-%m-%d')
 current_month_key = pd.to_datetime('today').strftime('%Y%m')
 
+# Print timestamp for log
+print("Current Run:", datetime.now().strftime("%H:%M:%S"))
+
 # Path to data
-data_path = 'data'
+data_path = '../data'
 
 # Angaza user and password
 username = 'mike@pacafrica.co.za'
