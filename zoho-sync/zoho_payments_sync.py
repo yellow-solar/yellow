@@ -14,7 +14,7 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 
 # Angaza table import
-data = pd.read_csv('../data/payments.csv').replace("&","and",regex=True)
+data = pd.read_csv('../data/payments.csv').replace("&","and",regex=True).replace("<","and",regex=True).replace(">","and",regex=True)
 # Header tables
 header = pd.read_csv('headers/payments_header.csv')
 
