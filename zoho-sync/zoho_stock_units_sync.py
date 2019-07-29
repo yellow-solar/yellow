@@ -16,7 +16,7 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 
 # Angaza table import
-stock_data = pd.read_csv('../data/stock_unit_statuses.csv').replace("&","and",regex=True)
+stock_data = pd.read_csv('../data/stock_unit_statuses.csv').replace("&","and",regex=True).replace("<","and",regex=True).replace(">","and",regex=True)
 # Header tables
 header = pd.read_csv('headers/stock_header.csv')
 # Stock table headers

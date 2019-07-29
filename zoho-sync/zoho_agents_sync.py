@@ -17,12 +17,12 @@ agents_data = pd.read_csv('../data/agents.csv').replace("&","and",regex=True)
 # Header tables
 header = pd.read_csv('headers/agents_header.csv')
 
+# Sync table filter on headers to upload
+agents_data = agents_data[header.columns.values].fillna('')
 # Drop the non-agent lines
 agents_data = agents_data[~agents_data.role.isin(['Administrator','Operator', 'Viewer'])]
 # Convert the customer age floats to integer
 agents_data.limit_amount = agents_data.limit_amount.apply(lambda x: int(x) if x != '' else x)
-# Sync table filter on headers to upload
-agents_data = agents_data[header.columns.values].fillna('')
 
 
 # Time this whole thing

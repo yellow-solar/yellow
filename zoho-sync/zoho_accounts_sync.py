@@ -14,7 +14,7 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 ### Accounts table
 # Import accounts and reformat write-off heading
-accounts = pd.read_csv('../data/accounts.csv').replace("&","and",regex=True)
+accounts = pd.read_csv('../data/accounts.csv').replace("&","and",regex=True).replace("<","and",regex=True).replace(">","and",regex=True)
 # Import column headers for accounts
 accounts_header = pd.read_csv('headers/accounts_header.csv')
 # Rename angaza col name to Zoho col name 
@@ -24,7 +24,7 @@ accounts = accounts[accounts_header.columns.values].fillna('')
 # Covnert the customer age floats to integer
 accounts.customer_age = accounts.customer_age.apply(lambda x: int(x) if x != '' else x)
 # Remove detached and written-off acccounts
-accounts = accounts[~accounts.account_status.isin(['DETACHED', 'WRITTEN_OFF'])]
+# accounts = accounts[~accounts.account_status.isin(['DETACHED', 'WRITTEN_OFF'])]
 
 # Time the API queries
 t1 = datetime.now()
