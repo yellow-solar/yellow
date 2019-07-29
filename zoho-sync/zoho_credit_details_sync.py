@@ -1,6 +1,7 @@
 import zohoAPI
 import pandas as pd
 from datetime import datetime 
+import time
 from zohoAPI import ZohoAPI, dfUploadSync, formDelete
 
 # Config for zoho sync calls and log
@@ -32,6 +33,8 @@ t1 = datetime.now()
 # Delete all credit details records
 # delete = formDelete(form=form, zoho=zoho)
 delete = zoho.add("API_triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
+
+time.sleep(5)
 
 # Upload credit details table
 if delete.status_code==200:
