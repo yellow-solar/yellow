@@ -12,12 +12,10 @@ import requests
 from requests.auth import HTTPBasicAuth
 from io import StringIO
 
-# Pandas options
-pd.set_option('display.max_rows', 150)
-pd.set_option('display.max_columns', 50)
-pd.set_option('display.float_format', lambda x: '%.2f' % x)
-# pd.set_option('display.width', 1000)
+# Print timestamp for log
+print("Running periods calculation and account enrichment:", datetime.now().strftime("%H:%M:%S"))
 
+# Config month and timestamps
 today_ts = pd.to_datetime('today').round('1s')
 today_string = pd.to_datetime('today').strftime('%Y-%m-%d')
 
