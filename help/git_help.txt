@@ -33,6 +33,11 @@ git log
 # Check the current branch - make sure you're aware of what branch you're working in
 git branch
 
+#ON AWS WHEN YOU WANT TO OVERRIDE
+git fetch # fetch current branch
+git reset --hard origin/master
+
+
 
 # Git commands
 https://guides.github.com/introduction/git-handbook/

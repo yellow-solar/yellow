@@ -11,7 +11,6 @@ int_columns = [
 'owner_msisdn',
 'next_of_kin_contact_number',
 'customer_age',
-'customer_phone_number',
 ]
 
 # Print timestamp for log

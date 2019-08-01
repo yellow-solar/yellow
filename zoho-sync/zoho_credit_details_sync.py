@@ -8,7 +8,6 @@ from zohoAPI import ZohoAPI, dfUploadSync, formDelete
 form = "Applications_Credit_Details"
 int_columns = [
 'total_annual_income_from_other_sources_not_listed_above_in_mwk',
-'phone',
 ]
 
 # Print timestamp for log

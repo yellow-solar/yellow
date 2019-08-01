@@ -132,6 +132,7 @@ def dfUploadSync(df, form, zoho, slice_length=500):
                     if status.text != 'Success':
                         print("WARNING: " + status.text)
             else:
+                print(rpc_request.text)
                 raise Exception("Received errorlist in rpc response from Zoho")
 
         else:
