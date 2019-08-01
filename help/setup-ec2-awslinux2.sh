@@ -6,20 +6,36 @@ sudo sed -i '/ZONE="UTC"/c\ZONE="Africa/Johannesburg"' /etc/sysconfig/clock
 # Create symbolic link to local time
 sudo ln -sf /usr/share/zoneinfo/Africa/Johannesburg /etc/localtime
 
-
 # 2. Clone git repositories
+# prod jobs - master
+git clone 
+#beta branch
+git clone
+#django page 
+git
 
 # 3. Cron - start/setup
+#got into project folder with cron file
+crontab cronfile.txt
+#check it's been read
+crontab -l
+#-r to remove and then you can re add
 
-# 4. Install pip3 
+#  Install mysqlclient
+sudo yum install mysql
+# install files for python mysqlclient instalation
+sudo yum install libssl-dev
+
+#  Install pip3 
 sudo yum install pip3
 
-# 5. Install virtualenv
+ # Install virtualenv
 sudo pip3 install virtualenv
 
-# 6. Create virtual env for data job
+# Create virtual env for data job
 virtualenv data-jobs
 
-
-
+# activate it and install requirements
+pip install -r requirements.txt
+pip install mysqlclient
 

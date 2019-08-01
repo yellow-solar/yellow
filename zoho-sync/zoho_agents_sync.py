@@ -5,6 +5,10 @@ from zohoAPI import ZohoAPI, dfUploadSync, formDelete
 
 # Config for zoho sync calls and log
 form = "Agents_Data_Import"
+int_columns = [
+'limit_amount',
+'phone',
+]
 
 # Print timestamp for log
 print(form + " upload sync:", datetime.now().strftime("%H:%M:%S"))
@@ -13,7 +17,7 @@ print(form + " upload sync:", datetime.now().strftime("%H:%M:%S"))
 zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-management')
 
 # Angaza table import
-agents_data = pd.read_csv('../data/agents.csv').replace("&","and",regex=True)
+agents_data = pd.read_csv('../data/agents.csv')
 # Header tables
 header = pd.read_csv('headers/agents_header.csv')
 
@@ -21,8 +25,9 @@ header = pd.read_csv('headers/agents_header.csv')
 agents_data = agents_data[header.columns.values].fillna('')
 # Drop the non-agent lines
 agents_data = agents_data[~agents_data.role.isin(['Administrator','Operator', 'Viewer'])]
-# Convert the customer age floats to integer
-agents_data.limit_amount = agents_data.limit_amount.apply(lambda x: int(x) if x != '' else x)
+# Convert integer columns from strings to integer
+for col in int_columns:
+    agents_data[col] = agents_data[col].replace('[^0-9]','',regex=True).apply(lambda x: int(x) if x != '' else x)
 
 
 # Time this whole thing

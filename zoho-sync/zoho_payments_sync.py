@@ -5,6 +5,10 @@ from zohoAPI import ZohoAPI, dfUploadSync, formDelete
 
 # Config for zoho sync calls and log
 form = "Payments_Data_Import"
+int_columns = [
+'account_number',
+'phone',
+]
 
 # Print timestamp for log
 print(form +" upload sync:", datetime.now().strftime("%H:%M:%S"))
@@ -14,7 +18,7 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 
 # Angaza table import
-data = pd.read_csv('../data/payments.csv').replace("&","and",regex=True).replace("<","and",regex=True).replace(">","and",regex=True)
+data = pd.read_csv('../data/payments.csv')
 # Header tables
 header = pd.read_csv('headers/payments_header.csv')
 
@@ -22,7 +26,9 @@ header = pd.read_csv('headers/payments_header.csv')
 data = data[header.columns.values].fillna('')
 #shorten length of payment notes
 data.payment_note = data.payment_note.apply(lambda x:x[0:250] if len(x) > 250 else x)
-
+# Convert the customer age, accounts, etc. strings to integer
+for col in int_columns:
+    data[col] = data[col].replace('[^0-9]','',regex=True).apply(lambda x: int(x) if x != '' else x)
 
 # Time this whole thing
 t1 = datetime.now()

@@ -1,13 +1,13 @@
 # Angaza jobs
-40 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/angaza-sync/angaza_pull.py >> .log/angaza_sync.log 2>&1
+40 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/angaza-sync/angaza_pull.py >> ../..log/angaza_sync.log 2>&1
 #Zoho jobs
-45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_accounts_sync.py >> .log/zoho_sync.log 2>&1
-45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_agents_sync.py >> .log/zoho_sync.log 2>&1
-45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_credit_details_sync.py >> .log/zoho_sync.log 2>&1
-45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_payments_sync.py >> .log/zoho_sync.log 2>&1
-45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_personal_details_sync.py >> .log/zoho_sync.log 2>&1
-45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_replacements_sync.py >> .log/zoho_sync.log 2>&1
-45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_stock_units_sync.py >> .log/zoho_sync.log 2>&1
-0 9 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_dolo_sync.py >> .log/zoho_sync.log 2>&1
+45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_accounts_sync.py >> ../.log/zoho_sync.log 2>&1
+45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_agents_sync.py >> ../.log/zoho_sync.log 2>&1
+45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_credit_details_sync.py >> ../.log/zoho_sync.log 2>&1
+45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_payments_sync.py >> ../.log/zoho_sync.log 2>&1
+45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_personal_details_sync.py >> ../.log/zoho_sync.log 2>&1
+45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_replacements_sync.py >> ../.log/zoho_sync.log 2>&1
+45 7,11,14,16,23 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_stock_units_sync.py >> ../.log/zoho_sync.log 2>&1
+0 9 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/zoho-sync/zoho_dolo_sync.py >> ../.log/zoho_sync.log 2>&1
 # Yellow jobs
-45 8 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/yellow-jobs/periods_update.py > .log/yellow_jobs.log 2>&1
+45 8 * * * cd prod-jobs && ~/.venv/data-jobs/bin/python ~/prod-jobs/yellow-jobs/periods_update.py > ../.log/yellow_jobs.log 2>&1

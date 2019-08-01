@@ -11,5 +11,16 @@ Create an alias so you can activate the venv quickly by adding something like th
 format:
 alias aliasname='command'
 
-#aliases
+#aliases to activate virtualenv
 alias activ_nff='source ~/Projects/.venv/newfeefee/bin/activate'
+
+# install requirements.txt from project root after ativating the virtualenv
+pip install -r requirements.txt
+
+# install mysqlclient if failed
+sudo apt-get install install libssl-dev
+sudo yum install libssl-dev
+pip install mysqlclient
+
+
+

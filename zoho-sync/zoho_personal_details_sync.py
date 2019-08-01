@@ -5,6 +5,9 @@ from zohoAPI import ZohoAPI, dfUploadSync, formDelete
 
 # Config for zoho sync calls and log
 form = "Applications_Personal_Details"
+int_columns = [
+'phone',
+]
 
 # Print timestamp for log
 print(form +" upload sync:", datetime.now().strftime("%H:%M:%S"))
@@ -14,11 +17,14 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 ### Prospects
 # Angaza table import
-prospects = pd.read_csv('../data/prospects.csv').replace("&","and",regex=True).replace("<","and",regex=True).replace(">","and",regex=True)
+prospects = pd.read_csv('../data/prospects.csv')
 # Header tables
 app_personal_details_header = pd.read_csv('headers/applications_personal_details_header.csv')
 # Personal details table tables
 personal_details = prospects[app_personal_details_header.columns.values].fillna('')
+# Convert integer columns from strings to integer
+for col in int_columns:
+    personal_details[col] = personal_details[col].replace('[^0-9]','',regex=True).apply(lambda x: int(x) if x != '' else x)
 
 
 # Time this whole thing

@@ -47,7 +47,10 @@ for APIname in APIs.keys():
     snapshot = requests.get(base_url+APIs[APIname], auth=HTTPBasicAuth(username, password))
     if snapshot.status_code == 200:
         print("Request successful. Storing csv...")
-        snapshot_df = pd.read_csv(StringIO(snapshot.content.decode('utf-8'))).replace('None',np.NaN) 
+        snapshot_df = pd.read_csv(StringIO(snapshot.content.decode('utf-8')))
+        # Replace bad Nones and characters before saving
+        snapshot_df = snapshot_df.replace('None',np.NaN).replace('none',np.NaN).replace('NONE',np.NaN)
+        snapshot_df = snapshot_df.replace("&","and",regex=True).replace("<","",regex=True).replace(">","",regex=True)
         snapshot_df.to_csv(data_path+APIs[APIname]+'.csv', index=False)
     else:
         raise ValueError("Request to " + APIname + " failed with error code: " + str(snapshot.status_code))
@@ -82,7 +85,10 @@ for month in month_keys:
         
         # if request raised successfully
         if accounts.status_code == 200:
-            account_data = pd.read_csv(StringIO(accounts.content.decode('utf-8'))).replace('None',np.NaN)
+            account_data = pd.read_csv(StringIO(accounts.content.decode('utf-8')))
+            # Replace bad Nones and characters before saving
+            account_data = account_data.replace('None',np.NaN).replace('none',np.NaN).replace('NONE',np.NaN)
+            account_data = account_data.replace("&","and",regex=True).replace("<","",regex=True).replace(">","",regex=True)
             account_data.to_csv(data_path+'/accounts '+month+'.csv', index=False)
             print("Downloaded: " + month)
         # if return status not 200, raise exception on value

@@ -111,7 +111,7 @@ def dfUploadSync(df, form, zoho, slice_length=500):
     response_count = 0
     
     # Seems like 500 is the limit - do it in slices
-    for g, df_slice in df.groupby(np.arange(len(df)) // slice_length):
+    for _, df_slice in df.groupby(np.arange(len(df)) // slice_length):
         print("Request number: " + str(response_count) + ", Records: " + str(len(df_slice)))
         # Create xml string from accounts data
         xml_string = zoho.createXml(form, df_slice)

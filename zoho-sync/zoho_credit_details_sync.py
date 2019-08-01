@@ -6,6 +6,10 @@ from zohoAPI import ZohoAPI, dfUploadSync, formDelete
 
 # Config for zoho sync calls and log
 form = "Applications_Credit_Details"
+int_columns = [
+'total_annual_income_from_other_sources_not_listed_above_in_mwk',
+'phone',
+]
 
 # Print timestamp for log
 print(form + " upload sync:", datetime.now().strftime("%H:%M:%S"))
@@ -15,7 +19,7 @@ zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-man
 
 ### Prospects
 # Angaza table import
-prospects = pd.read_csv('../data/prospects.csv').replace("&","and",regex=True).replace("<","and",regex=True).replace(">","and",regex=True)
+prospects = pd.read_csv('../data/prospects.csv')
 # Header tables
 header = pd.read_csv('headers/applications_credit_details_header.csv')
 
@@ -23,8 +27,9 @@ header = pd.read_csv('headers/applications_credit_details_header.csv')
 credit_details = prospects[header.columns.values].fillna('')
 # Replace the '-' with '_' to match the Zoho field index
 credit_details.columns = [x.replace('-','_').replace('/','_').rstrip() for x in credit_details.columns.values]
-# Convert to integer - total_annual_income_from_other_sources_not_listed_above_in_mwk 
-credit_details.total_annual_income_from_other_sources_not_listed_above_in_mwk  = credit_details.total_annual_income_from_other_sources_not_listed_above_in_mwk .apply(lambda x: int(x) if x != '' else x)
+# Convert integer columns from strings to integer
+for col in int_columns:
+    credit_details[col] = credit_details[col].replace('[^0-9]','',regex=True).apply(lambda x: int(x) if x != '' else x)
 
 
 # Time this whole thing

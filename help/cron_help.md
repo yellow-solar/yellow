@@ -1,32 +1,35 @@
+# Cron Help and Tutorial
+
 Cron is the linux/unix scehduler. It has a *very simple interface where each job is just a line on a file:
 
 You can view the file using:
-crontab -l
+`crontab -l`
 
 Edit the file using (opens in your default text editor):
-crontab -e
+`crontab -e`
 
 Change your default text editior with the following in your terminal:
-export EDITOR=nano 
+`export EDITOR=nano`
 
 You can also load a file to cron:
-crontab cron.txt
+`crontab cron.txt`
 
-You can add comments followed by the # character.
-# This cron job does something very important
-
+You can add comments with  the # character.
+`# This cron job does something very important`
 
 The structure of the cron jobs looks like this:
+    Timing		Execute PHP	Path to script				Output
+    * * * * *	/usr/bin/php	/var/www/html/crontest/cron.php		> /dev/null 2>&1
 
-Timing		Execute PHP	Path to script				Output
-* * * * *	/usr/bin/php	/var/www/html/crontest/cron.php		> /dev/null 2>&1
+Time five time-and-date fields are as follows: 
+ - minute (0-59), 
+ - hour (0-23, 0 = midnight), 
+ - day (1-31), 
+ - month (1-12), 
+ - weekday (0-6, 0 = Sunday)
 
-
-Tihe five time-and-date fields are as follows: 
-minute (0-59), hour (0-23, 0 = midnight), day (1-31), month (1-12), weekday (0-6, 0 = Sunday).ming
-
-* = (wildcard) all
-/x = x time per period (e.g. /5 in the minutes will run every 5 mins) 
+ - * = (wildcard) all
+ - /x = x (e.g. 2/5 in the minutes will run every 5 mins starting at minute 2) 
 
 
 Special words:
@@ -55,31 +58,32 @@ Run once a day, "0 0 * * *".
 Run once an hour, "0 * * * *".
 
 
-Logs:
+##Logs:
 By default installation the cron jobs get logged to a file called /var/log/syslog
 Search through using grep (text search function in linux)
 
 sudo grep -i cron /var/log/syslog
 
-# AWS EC2 LINUX-2
-#install
-yum -y install crontabs
-chkconfig crond on
-service crond start
-service crond status
-
+## AWS EC2 LINUX-2
+###install
+    yum -y install crontabs
+    chkconfig crond on
+    service crond start
+    service crond status
+    
 #log is found here: (because the unix is slightly different):
-sudo vim /var/log/cron 
+`sudo vim /var/log/cron `
 # search for a specific thread of jobs
-sudo grep -i <keyword> /var/log/cron
+`sudo grep -i <keyword> /var/log/cron`
 
-More help:
+
+###TO DO:
+ - learn about file locking to create job dependencies
+
+
+ ####More help:
 https://help.ubuntu.com/community/CronHowto
 
-
-TO DO:
-learn about cron logs
-learn about file locking to create job dependencies
 
 
 
