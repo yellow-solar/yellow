@@ -7,6 +7,38 @@ CREATE SCHEMA IF NOT EXISTS Angaza ;
 USE Angaza ;
 
 -- -----------------------------------------------------
+-- Table Angaza.clients
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS Angaza.clients;
+CREATE TABLE IF NOT EXISTS Angaza.clients (
+  client_id                                 INT             NOT NULL AUTO_INCREMENT,
+  /* client_abbv                               VARCHAR(2)      NOT NULL DEFAULT 'CL', */
+  external_source_id                        VARCHAR(45)     NULL,
+  organization                              VARCHAR(45)     NOT NULL,
+  country                                   VARCHAR(45)     NOT NULL,
+  client_name                               VARCHAR(45)     NOT NULL, 
+  phone_number                              INT             NOT NULL,
+  account_numbers                           VARCHAR(250)    NOT NULL,
+  recorder                                  VARCHAR(100)    NOT NULL,
+  date_created_utc                          TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  archived                                  BOOLEAN         DEFAULT 0,
+  
+  /* Fields linked to  accounts/credit questions */
+  client_photo                              VARCHAR(250)    NOT NULL,
+
+  -- System fields
+  zoho_id                                   BIGINT          NULL,
+  added_user                                VARCHAR(45)     NOT NULL,
+  added_timestamp                           TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  change_timestamp                          TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  bus_effective_from                        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (client_id),
+    index(client_name),
+    index(client_id, external_source_id)
+  );
+
+-- -----------------------------------------------------
 -- Table Angaza.accounts
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS Angaza.accounts;
@@ -82,34 +114,6 @@ CREATE TABLE IF NOT EXISTS Angaza.accounts (
 );
 
 
--- -----------------------------------------------------
--- Table Angaza.clients
--- -----------------------------------------------------
-DROP TABLE IF EXISTS Angaza.clients;
-CREATE TABLE IF NOT EXISTS Angaza.clients (
-  client_id                                 INT             NOT NULL,
-  client_abbv                               VARCHAR(2)      NOT NULL DEFAULT 'CL',
-  client_angaza_id                          VARCHAR(45)     NOT NULL DEFAULT (CONCAT(client_abbv,client_id)),
-  organization                              VARCHAR(45)     NOT NULL,
-  client_name                               VARCHAR(45)     NOT NULL, 
-  phone_number                              INT             NOT NULL,
-  account_numbers                           VARCHAR(250)    NOT NULL,
-  recorder                                  VARCHAR(100)    NOT NULL,
-  date_created_utc                          TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  archived                                  BOOLEAN         DEFAULT 0,
-
-  -- Other
-  country                                   VARCHAR(45)     NOT NULL,
-  -- System fields
-  zoho_id                                   BIGINT          NULL,
-  added_user                                VARCHAR(45)     NOT NULL,
-  added_timestamp                           TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  change_timestamp                          TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  bus_effective_from                        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-  PRIMARY KEY (client_id),
-    index(client_name)
-  );
 
 -- -----------------------------------------------------
 -- Table Angaza.payments
