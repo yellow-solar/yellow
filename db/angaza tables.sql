@@ -6,14 +6,18 @@
 CREATE SCHEMA IF NOT EXISTS Angaza ;
 USE Angaza ;
 
+/* Drop tables */
+DROP TABLE IF EXISTS Angaza.payments;
+DROP TABLE IF EXISTS Angaza.accounts;
+DROP TABLE IF EXISTS Angaza.clients;
+
 -- -----------------------------------------------------
 -- Table Angaza.clients
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Angaza.clients;
 CREATE TABLE IF NOT EXISTS Angaza.clients (
   client_id                                 INT             NOT NULL AUTO_INCREMENT,
   /* client_abbv                               VARCHAR(2)      NOT NULL DEFAULT 'CL', */
-  external_source_id                        VARCHAR(45)     NULL,
+  client_external_id                        VARCHAR(45)     NULL UNIQUE,
   organization                              VARCHAR(45)     NOT NULL,
   country                                   VARCHAR(45)     NOT NULL,
   client_name                               VARCHAR(45)     NOT NULL, 
@@ -24,29 +28,30 @@ CREATE TABLE IF NOT EXISTS Angaza.clients (
   archived                                  BOOLEAN         DEFAULT 0,
   
   /* Fields linked to  accounts/credit questions */
-  client_photo                              VARCHAR(250)    NOT NULL,
+  client_photo                              VARCHAR(250)    NULL,
 
   -- System fields
   zoho_id                                   BIGINT          NULL,
   added_user                                VARCHAR(45)     NOT NULL,
   added_timestamp                           TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
   change_timestamp                          TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  bus_effective_from                        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  bus_effective_from                        DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  bus_effective_to                          DATETIME        NOT NULL DEFAULT '9999-12-31 23:59:59',
 
   PRIMARY KEY (client_id),
     index(client_name),
-    index(client_id, external_source_id)
+    index(client_id, client_external_id)
   );
+
 
 -- -----------------------------------------------------
 -- Table Angaza.accounts
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Angaza.accounts;
 CREATE TABLE IF NOT EXISTS Angaza.accounts (
   -- Angaza fields
-  account_id                                INT             NOT NULL,
-  account_abbv                              VARCHAR(2)      NOT NULL DEFAULT 'AC',
-  account_angaza_id                         VARCHAR(45)     NOT NULL DEFAULT (CONCAT(account_abbv,account_id)),
+  account_id                                INT             NOT NULL AUTO_INCREMENT,
+  /* account_abbv                              VARCHAR(2)      NOT NULL DEFAULT 'AC', */
+  account_external_id                       VARCHAR(45)     NULL UNIQUE,
 
   account_number                            INT             NULL,
   previous_account_number                   INT             NULL,
@@ -79,7 +84,7 @@ CREATE TABLE IF NOT EXISTS Angaza.accounts (
 
   -- Customer info
   client_id                                 INT             NOT NULL,
-  client_angaza_id                          VARCHAR(45)     NULL,
+  client_external_id                        VARCHAR(45)     NULL,
   owner_msisdn                              VARCHAR(45)     NULL,
   owner_name                                VARCHAR(255)    NULL,
   owner_location                            VARCHAR(100)    NULL,
@@ -109,28 +114,35 @@ CREATE TABLE IF NOT EXISTS Angaza.accounts (
   INDEX account_number (account_number),
   INDEX zoho_id (zoho_id)
 
-  /* CONSTRAINT fk_client_id FOREIGN KEY (client_id)
-    REFERENCES clients(client_id) */
+  -- CONSTRAINT fk_client_id FOREIGN KEY (client_id)
+  --   REFERENCES clients(client_id)
 );
-
-
 
 -- -----------------------------------------------------
 -- Table Angaza.payments
 -- -----------------------------------------------------
--- DROP TABLE IF EXISTS Angaza.payments;
--- CREATE TABLE Angaza.payments (
---   -- Angaza fields
---   payment_id BIGINT NOT NULL,
---   payment_abbv VARCHAR(2) NOT NULL DEFAULT 'PA',
---   payment_angaza_id VARCHAR(45) NOT NULL DEFAULT (CONCAT(payment_abbv,payment_id)),
+CREATE TABLE Angaza.payments (
+  
+  payment_id                                INT             NOT NULL AUTO_INCREMENT,
+  payment_external_id                       VARCHAR(45)     NULL,  
+  organization                              VARCHAR(100)    NULL,
+  country                                   VARCHAR(100)    NULL,
+  effective_utc                             TIMESTAMP       NOT NULL,
+  account_number                            INT             NOT NULL,
+  account_id                                INT             NOT NULL,
+  amount                                    DECIMAL(15,2)   NOT NULL,
 
---   organization varchar(45) NOT NULL,
---   effective_utc TIMESTAMP NOT NULL,
---   account_number datetime(45) DEFAULT NULL,
---   amount decimal(15,,2) NOT NULL,
---   PRIMARY KEY (payment_angaza_id)
--- );
+  -- System fields
+  zoho_id                                   BIGINT          NULL,
+  added_user                                VARCHAR(45)     NULL,
+  added_timestamp                           TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  change_timestamp                          TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (payment_id)
+
+  -- CONSTRAINT fk_account_id FOREIGN KEY (client_id)
+  --   REFERENCES clients(client_id)
+);
 
 
 

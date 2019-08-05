@@ -18,7 +18,7 @@ today_string = pd.to_datetime('today').strftime('%Y-%m-%d')
 current_month_key = pd.to_datetime('today').strftime('%Y%m')
 
 # Print timestamp for log
-print("Current Run:", datetime.now().strftime("%H:%M:%S"))
+print("Current Run:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 # Path to data
 data_path = '../data'

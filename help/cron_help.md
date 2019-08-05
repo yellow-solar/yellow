@@ -72,7 +72,7 @@ sudo grep -i cron /var/log/syslog
     service crond status
     
 #log is found here: (because the unix is slightly different):
-`sudo vim /var/log/cron `
+`sudo vim /var/log/cron`
 # search for a specific thread of jobs
 `sudo grep -i <keyword> /var/log/cron`
 

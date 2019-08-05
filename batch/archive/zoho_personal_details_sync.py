@@ -10,7 +10,7 @@ int_columns = [
 ]
 
 # Print timestamp for log
-print(form +" upload sync:", datetime.now().strftime("%H:%M:%S"))
+print(form + " upload sync:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 # Create connection
 zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-management')

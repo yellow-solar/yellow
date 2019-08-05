@@ -1,7 +1,17 @@
-import zohoAPI
+"""Take the doanloaded accounts csv and upload in chunks to Zoho
+
+    Program deletes the current records first 
+
+"""
+
+# Import 3rd party libaries
 import pandas as pd
 from datetime import datetime 
+
+# Import Yellow libaries
+import zohoAPI
 from zohoAPI import ZohoAPI, dfUploadSync, formDelete
+
 
 # Config for zoho sync calls and log
 form = "Accounts_Data_Import"
@@ -14,7 +24,7 @@ int_columns = [
 ]
 
 # Print timestamp for log
-print(form + " upload sync:", datetime.now().strftime("%H:%M:%S"))
+print(form + " upload sync:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 # Create connection
 zoho = ZohoAPI('yellow679', 'bdbda4796c376c1fb955a749d47a17e7', 'collections-management')

@@ -25,7 +25,7 @@ class ZohoAPI:
         self.format_type = 'json'
         self.APIheader = {
             'authtoken': self.auth_token, 
-            'scope': self.scope
+            'scope': self.scope,
         } 
         self.RPCheader = {
             **self.APIheader,
@@ -39,6 +39,13 @@ class ZohoAPI:
         #Create xml base for Zoho RPC API - HOW DO YOU HAVE NEW LINES IN CODE AND THEN REMOVE,SO YOU DON'T HAVE THESE LONG LINES THAT GO OVER THE PAGE
         self.rpcBaseXML = """<ZohoCreator><applicationlist><application name={0}><formlist><form name={1}>{2}</form></formlist></application></applicationlist></ZohoCreator>"""
         
+    #  function to get form
+    def get(self, form, payload={}):
+        url = self.baseUrl + '/' + self.format_type + '/' + self.application_name + '/' + 'view/' + form
+        parameters = {**self.RPCheader,**payload}
+        r = requests.get(url, params = parameters)
+        return(r)
+
     #  function to add single row
     def add(self, form, payload):
         url = self.baseUrl + '/' + self.owner + '/' + self.format_type + '/' + self.application_name + '/' + 'form/' + form + self.addUrl 
