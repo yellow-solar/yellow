@@ -70,9 +70,6 @@ payment_columns = ['angaza_id','account_number','account_angaza_id','type','down
 acc_date_cols = ['date_of_latest_payment_utc','date_of_disablement_utc','registration_date_utc', 'date_of_repossession_utc']
 pay_date_cols = ['effective_utc','recorded_utc']
 
-# Print current path
-print(os.listdir())
-
 # Import account and payments data
 accounts_per_month = pd.DataFrame()
 for f in os.listdir(data_path+'/'):

@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS Angaza.accounts (
 -- -----------------------------------------------------
 -- Table Angaza.payments
 -- -----------------------------------------------------
-CREATE TABLE Angaza.payments (
+/* CREATE TABLE Angaza.payments (
   
   payment_id                                INT             NOT NULL AUTO_INCREMENT,
   payment_external_id                       VARCHAR(45)     NULL,  
@@ -142,7 +142,7 @@ CREATE TABLE Angaza.payments (
 
   -- CONSTRAINT fk_account_id FOREIGN KEY (client_id)
   --   REFERENCES clients(client_id)
-);
+); */
 
 
 

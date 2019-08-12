@@ -14,7 +14,11 @@ cp config/.bash_profile ~/.bash_profile
 
 # Update venv for data-jobs
 source ~/.venv/data-jobs/bin/activate
+#make sure you installed mysql pre-reqs
 pip install -r requirements.txt
 deactivate
+
+# pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
 
 

@@ -25,6 +25,8 @@ crontab -l
 sudo yum install mysql
 # install files for python mysqlclient instalation
 sudo yum install libssl-dev
+sudo yum -y install gcc
+sudo yum install python3-devel python-devel mysql-devel
 
 #  Install pip3 
 sudo yum install pip3
@@ -33,9 +35,12 @@ sudo yum install pip3
 sudo pip3 install virtualenv
 
 # Create virtual env for data job
-virtualenv data-jobs
+virtualenv .venv/data-jobs
 
-# activate it and install requirements
-pip install -r requirements.txt
-pip install mysqlclient
+# # activate it and install requirements
+# pip install -r requirements.txt
+
+# Install g client for storage access
+pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
 

@@ -15,8 +15,13 @@
     },
     "africastalking":{
         "user":"newshirt",
-        "senderID":"YELLOW",
-        "authtoken":"8085301ff73e534b7aef4cd8c27399efa2aff468c4ac9e73a889963b9b5abc00"
+        "authtoken":"8085301ff73e534b7aef4cd8c27399efa2aff468c4ac9e73a889963b9b5abc00",
+        "senderID":"YELLOW"
+    },
+    "africastalkingsandbox":{
+        "user":"sandbox",
+        "authtoken":"ed920a7a366014c633ad09f40a09a33fb984d0edef69a1ede2a40e46ec895b56",
+        "senderID":"YELLOW"
     },
     "zoho":{
         "scope":"creatorapi",

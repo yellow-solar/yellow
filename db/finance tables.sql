@@ -37,9 +37,10 @@ CREATE TABLE IF NOT EXISTS Finance.cashflow (
 -- -----------------------------------------------------
 -- Table Finance.mobile;
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS Finance.mobile (
+/* CREATE TABLE IF NOT EXISTS Finance.mobile (
   trn_id                                    INT             NOT NULL AUTO_INCREMENT,
   provider_id                               VARCHAR(100)    NOT NULL,
+  ipns_id                                   VARCHAR(100)    NOT NULL,
   trn_timestamp                             TIMESTAMP       NOT NULL,
   trn_ref_number                            VARCHAR(100)    NOT NULL,
   currency                                  VARCHAR(3)      NOT NULL,
@@ -60,4 +61,4 @@ CREATE TABLE IF NOT EXISTS Finance.mobile (
 
   PRIMARY KEY (trn_id),
     index(provider_id)
-  );
+  ); */

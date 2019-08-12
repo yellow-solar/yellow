@@ -1,18 +1,10 @@
+# Standard and 3rd party libraries
 import os
 import pandas as pd
 import numpy as np
-import re
-from pandas.tseries.offsets import MonthEnd
-from datetime import timedelta
-from datetime import datetime
+# import re
 import time
-import itertools
-import sqlite3
 import requests
-from requests.auth import HTTPBasicAuth
-import csv
-from io import StringIO
-
 import xml.etree.ElementTree as ET
 
 # Zoho API data

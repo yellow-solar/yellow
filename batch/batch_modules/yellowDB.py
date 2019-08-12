@@ -7,32 +7,27 @@ Note:
     # while the link name is the API name, and seen on the Zoho API reference page
 
 """
-
-# Standard library imports
-from datetime import datetime 
-import json
+# Standard and 3rd party libary imports
 import os
-
-# Third party imports
-import pandas as pd
-import sqlalchemy as db
-from sqlalchemy import MetaData
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+import json
 from pandas.io.json import json_normalize
+import sqlalchemy as db
+import pandas as pd
 
 # Local application imports
-import zohoAPI
-from zohoAPI import ZohoAPI
+from batch_modules.zohoAPI import ZohoAPI
 
-def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, form_link=None, if_exists='replace'):
+def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, form_link=None, if_exists='replace', df = None):
     """ Download or import and sync table in Yellow DB """
     # if there is a csv in the filename, import rather than fetch:
     if schema == 'Angaza':
         insert_df = pd.read_csv(f"../data/{table}.csv")
 
+    elif schema == 'Mobile':
+        insert_df = df
+
     # else need to fetch from Zoho
-    else:
+    elif schema == "Zoho":
         # If form_link is not given, set to form name
         if form_link is None:
             form_link = table
@@ -43,8 +38,15 @@ def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, form_
         zoho = ZohoAPI(zoho_cfg['zc_ownername'], zoho_cfg['authtoken'], zoho_cfg['app'])
 
         # Get the records from the cashflow form
+        print(f"Downloading zoho table {table}...")
         form_view = zoho.get(table, payload={'raw':'true',}) # via the trigger table
-        form_json = json.loads(form_view.text)
+        if form_view.status_code == 200:
+            if "errorlist" not in form_view.text.lower():
+                form_json = json.loads(form_view.text)
+            else: 
+                raise Exception (f"Errorlist return in Zoho request for {table}")
+        else:
+            raise Exception (f"Request returned error code {form_view.status_code} in Zoho request for {table}")
 
         # Convert JSON to pandas dataframe
         insert_df = json_normalize(form_json[form_link])
@@ -54,6 +56,9 @@ def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, form_
 
         # Assert len > 1
         assert len(insert_df)>0
+
+    else:
+        raise ValueError(f"{schema} is not a valid Yellow DB schema")
 
     ### Reformat header if requested:
     if insert_cols is not None:
