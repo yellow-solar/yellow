@@ -39,5 +39,17 @@
         "url":"https://41.78.57.230:9200/AirtelMoney/",
         "id":"999901097",
         "passwd":"#Wolley13579"
-    }   
+    },
+    "gdrive":{
+        "type": "service_account",
+        "project_id": "drive-api-249008",
+        "private_key_id": "db31cdfca28b31f6ab786e4eca4e78e8d7183371",
+        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCvQPYr6veE0QDn\njQf8+6MOV3jz3xVckYGKRpcOTPC2dgLmISJyCeciUIC8G3tL/Mv34GXPj8Z0QyPz\nZtaScZMG+PDDKYIoIXBkrZYLkTMl5eCYWnPzISGzp6p0J7QOmMTeYo2x58INGTG1\nXqXTzkNxLv6BQIWZ4yhloC4lWeZAw0O6nHq0w1vGDnUWxxpYBhLfOmukglg1fIU9\nBw2CNkDyZJQeJ8Mg5rt8MqeNSEy3GbCKYYL3mpfQdzISHhaZvFjKpR2NBib+IgjV\n7vCJKlJgBvjBADxY4EngbTpyZZ3VzBAucWoIzDBt+0Vi4L5+nFGys93PJgIY77WT\nJs+9jN/DAgMBAAECggEACnF95JK/5TOUhjfVPgdmFA4KWx30EUFqeBRKHsQJpBXW\n3mJ4bFXtZry9Wc2Zb1HFJc7tbOJNxSfVwJoO4fMlUR5h2n9iuNl6mm/tp7V4rXgh\nW3LTGK3kwDvsNbfCoba2JI+4Od3BpojVzs+xD19p4sNrecWf2ye6LzQjC9QWRc2Z\nFi7/h2YB+njmAh7J64CLVpuRGGkC7GoIomKdMjyandDhB1fzF2bWP2i3TQPs/l7F\nMR6pXkHVXVVVn3PEslfZqu/xSPUVALIrD/yite2HJdMW6y/z1895z87cbEFYaSNZ\nSe8JXsBlo8tY8a2XA/VShCrqbpBqUuspo97u0zJmoQKBgQDVsdyjVmht6jcg59ro\nPb98dOkoW01jGcrvfd08r/4p98UyrRp1WSmLE5vFY0bcVG/xHf/fT8ygU2AX72cS\n+AqGMhHv0OygHAXgvhfwoclbH3xRTY5cZRfhMSjB1lQZpZs5DJO3g9kQGXjKDq3p\n84gGEryPAD3VvxSeqLyTu7VQNQKBgQDR8uSzM7CUgKrPTzWF8hWLMjCYETgPaPtI\nix8BXF7terMIzTJgnTkETFbQqFobiuImkJNLlOQETc3AwmTvIOp1VI7hotw3lKOO\n0uZK/SBOLAfDy3HwOXyc0rVhEa7LyEknXtnltP4GnxYOGMYk8FsafqjTTMD1gZ0V\nwWLNp2NfFwKBgDz5f0dsBGg4iHpvLdtOozDT+yN0yeQZG/qyI0qJvTAkbrRDCGWr\nh1sTwULVTQbZYQef077Yej7VC3pI6VRUSkx4RP3000/sLxEtrI8Q2u+RUFuykYhz\noBi1eje0/FJFGsFwgUW/7VPWsMyW27EBuDJjbkIvg3VWDIApDYXp7ZZxAoGAF9S5\nTvoMDh84xEVabvTWqzEsQOabdWxWMZrRDyd8AvrNfa9FC6BtC2ba595kNAIkv3nj\nrk2dQDvQohOuv1H+KwlJGqWQ16JAmoKn71UiKJ1o2Dmsmjb8RRTJz9XhAHKgkx56\nH0/XEctXBoybWTALN0uvQCTTNkrbGNAVtgBNEEsCgYEAgszwPeC/YSTUBsXgPh6O\nrSxyVhJRRhsc8ZbQjDE2KqmfFSgYwF0qMlq8TAYZafHyYh+io9At19xTyZty4yF7\nvW7GYXmUGN6mvDKJyXiJTOcHL+o1ARYjeGWYCkVPTCMJGU0sj87dhb4eaCkDs44Y\n2I7/Lt8nFJYloxaUtrmGQxc=\n-----END PRIVATE KEY-----\n",
+        "client_email": "yellowadmin@drive-api-249008.iam.gserviceaccount.com",
+        "client_id": "115124185205584263346",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/yellowadmin%40drive-api-249008.iam.gserviceaccount.com"
+      }
 }

@@ -1,16 +1,18 @@
 # Angaza jobs
-25 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/angaza_pull.py                               >> ../.log/angaza_sync.log 2>&1
+25 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/angazapull.py                               >> ../.log/angaza_sync.log 2>&1
 
 #Zoho upload jobs
-30 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zoho_upload.py Accounts_Data_Import          >> ../.log/zoho_sync.log 2>&1
-30 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zoho_upload.py Agents_Data_Import            >> ../.log/zoho_sync.log 2>&1
-30 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zoho_upload.py Applications_Credit_Details   >> ../.log/zoho_sync.log 2>&1
-30 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zoho_upload.py Applications_Personal_Details >> ../.log/zoho_sync.log 2>&1
-30 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zoho_upload.py Payments_Data_Import          >> ../.log/zoho_sync.log 2>&1
-30 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zoho_upload.py Replaced_Units_Record         >> ../.log/zoho_sync.log 2>&1
-30 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zoho_upload.py Stock_Data_Import             >> ../.log/zoho_sync.log 2>&1
-40 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zoho_upload.py Dolo_Scores                   >> ../.log/zoho_sync.log 2>&1
+30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zohoupload.py Accounts_Data_Import          >> ../.log/zoho_sync.log 2>&1
+30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zohoupload.py Agents_Data_Import            >> ../.log/zoho_sync.log 2>&1
+30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zohoupload.py Applications_Credit_Details   >> ../.log/zoho_sync.log 2>&1
+30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zohoupload.py Applications_Personal_Details >> ../.log/zoho_sync.log 2>&1
+30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zohoupload.py Payments_Data_Import          >> ../.log/zoho_sync.log 2>&1
+30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zohoupload.py Replaced_Units_Record         >> ../.log/zoho_sync.log 2>&1
+30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zohoupload.py Stock_Data_Import             >> ../.log/zoho_sync.log 2>&1
+40 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/batch/zohoupload.py Dolo_Scores                   >> ../.log/zoho_sync.log 2>&1
 
 # Yellow jobs
-0 6,9,12,15,18 * * * cd yellow && ~/.venv/data-jobs/bin/python  ~/yellow/batch/periods_update.py                            >> ../.log/yellow_jobs.log 2>&1
+0 6,9,12,15,18 * * *    cd yellow && ~/.venv/data-jobs/bin/python  ~/yellow/batch/periodsupdate.py                           >> ../.log/yellow_jobs.log 2>&1
   
+# Airtel statement import - best practice for imports
+*/5 * * * *  cd yellow ~/.venv/data-jobs/bin/python -m batch.statementssync  >> ../.log/mobilestatements.log 2>&1

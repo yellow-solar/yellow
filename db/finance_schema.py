@@ -20,7 +20,8 @@ with open('config/config.json', 'r') as f:
 # Create engine
 engine = db.create_engine(
     f"{db_cfg['driver']}{db_cfg['user']}:{db_cfg['passwd']}@{db_cfg['host']}/Finance", 
-    echo = True)
+    # echo = True,
+    )
 
 # Declare base
 Base = declarative_base()

@@ -15,5 +15,8 @@ cd ~/yellow
 ~/.venv/data-jobs/bin/python ~/yellow/batch/zoho_upload.py Dolo_Scores                   
 
 # Yellow jobs
-~/.venv/data-jobs/bin/python  ~/yellow/batch/periods_update.py                           
+~/.venv/data-jobs/bin/python  ~/yellow/batch/periods_update.py  
+
+# Airtel statements
+~/.venv/data-jobs/bin/python -m batch.statements_sync.py
   

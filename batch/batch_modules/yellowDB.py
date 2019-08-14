@@ -15,7 +15,7 @@ import sqlalchemy as db
 import pandas as pd
 
 # Local application imports
-from batch_modules.zohoAPI import ZohoAPI
+from batch.batch_modules.zohoAPI import ZohoAPI
 
 def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, form_link=None, if_exists='replace', df = None):
     """ Download or import and sync table in Yellow DB """
