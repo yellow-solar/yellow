@@ -31,6 +31,9 @@ from batch.batch_modules.gdrive import (getFolderID, getFileIDs,
 from batch.batch_modules import gdrive
 from batch.batch_modules.zohoAPI import ZohoAPI
 
+# Log timestamp
+print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
 ### Setup connections
 # Google drive API config
 SCOPES = ['https://www.googleapis.com/auth/drive',]
@@ -44,6 +47,7 @@ gdrive_service = discovery.build('drive', 'v3',
 
 # Yellow DB
 # Access the config for DB
+os.environ['env'] = 'd'
 with open('config/config.json', 'r') as f:
     db_cfg = json.load(f)[f"yellowdb{os.environ['env']}"]
 

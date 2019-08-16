@@ -15,4 +15,4 @@
 0 6,9,12,15,18 * * *    cd yellow && ~/.venv/data-jobs/bin/python  ~/yellow/batch/periodsupdate.py                           >> ../.log/yellow_jobs.log 2>&1
   
 # Airtel statement import - best practice for imports
-*/5 * * * *  cd yellow ~/.venv/data-jobs/bin/python -m batch.statementssync  >> ../.log/mobilestatements.log 2>&1
+*/2 * * * * cd yellow && ~/.venv/data-jobs/bin/python -m batch.mobilestatements  >> ../.log/mobilestatements.log 2>&1

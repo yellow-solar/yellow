@@ -62,7 +62,7 @@ class Mobile(Base):
     def __repr__(self):
         return f"<User(provider_id='{self.provider_id}, amount={self.trn_amount})>"
 
-# Drop table if exists
+# Drop mobile table if exists
 try:
     Mobile.__table__.drop(engine)
 except:

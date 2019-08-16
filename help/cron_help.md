@@ -62,7 +62,7 @@ Run once an hour, "0 * * * *".
 By default installation the cron jobs get logged to a file called /var/log/syslog
 Search through using grep (text search function in linux)
 
-sudo grep -i cron /var/log/syslog
+`sudo grep -i cron /var/log/syslog`
 
 ## AWS EC2 LINUX-2
 ###install

@@ -38,7 +38,6 @@ def statementDF(df, col_mapping):
     return(df)
 
 
-
 def uploadStatement(gdrive_file, gdrive_service, archive_id, folder_id,  
                         session, mobile, **kwargs):
     """ Upload statement based on given file, gdrive service and 
@@ -53,60 +52,68 @@ def uploadStatement(gdrive_file, gdrive_service, archive_id, folder_id,
     add_table_args = kwargs.get('add_table_args')
 
     # Get csv in dataframe
-    df = getCSV(gdrive_file, gdrive_service, dt_columns=kwargs['dt_columns'], header=kwargs['header_row'])
-    # If not a df, continue
-    if df is None:
-        # use this if statement to delete/move non-csv files
-        if gdrive_file.get("id") != archive_id:
-            print(f"file {gdrive_file.get('name')} is not a readable csv file")
-        return
-
-    # Process df
-    processed_df = statementDF(
-        df,
-        col_mapping = kwargs.get('col_mapping')
-    )
-    
-    # Create the dict to add to 
-    rows_dict_list = processed_df.to_dict(orient="records")
-    
-    # Upload row by row
-    for row_dict in rows_dict_list:
-        # Create transaction objects trn with statement data plus other
-        trn = mobile(
-            **row_dict,
-            **add_table_args
-            )
-        # Check whether mobile provider trn id exists 
-        trn_exists = (session
-            .query(exists()
-                .where(mobile.provider_id==row_dict['provider_id']))
-            .scalar())
-        # If it does not exist, add it
-        if not trn_exists:
-            session.add(trn)
-        # If it already exists, get info for it, check if ref or status has changed 
-        # and only then update
-        else:
-            print(row_dict['provider_id'] + ' already exists.')
-            trn = session.query(mobile).filter_by(provider_id=row_dict['provider_id'])
-            # Update if ref or status has changed
-            if (trn.first().trn_ref_number!=row_dict['trn_ref_number'] 
-                or trn.first().trn_status!=row_dict['trn_status']):
-                trn.update({**row_dict,**{'changed_user':add_table_args['changed_user']}})
-                session.flush()
-                print('Updated.')
-        
-    # try commit and move file. If it failes, rollback and raise exception
-    try: 
-        session.commit()
-        #if successful, move file to archive
+    try:
+        # Get file csv return as pandas dataframe
+        df = getCSV(gdrive_file, gdrive_service, dt_columns=kwargs['dt_columns'], header=kwargs['header_row'])
+        # Move file first in case it takes long and another schedule starts
         _ = gdrive_service.files().update(
                                         fileId=gdrive_file.get("id"),
                                         addParents=archive_id,
                                         removeParents=folder_id,
-                                        fields='id, parents').execute()
+                                        fields='id, parents').execute()                                  
+        # If not a df, continue
+        if df is None:
+            # use this if statement to delete/move non-csv files
+            if gdrive_file.get("id") != archive_id:
+                print(f"file {gdrive_file.get('name')} is not a readable csv file")
+            return
+
+        # Process df
+        processed_df = statementDF(
+            df,
+            col_mapping = kwargs.get('col_mapping')
+        )
+        
+        # Create the dict to add to 
+        rows_dict_list = processed_df.to_dict(orient="records")
+        
+        # Upload row by row
+        for row_dict in rows_dict_list:
+            # Create transaction objects trn with statement data plus other
+            trn = mobile(
+                **row_dict,
+                **add_table_args
+                )
+            # Check whether mobile provider trn id exists 
+            trn_exists = (session
+                .query(exists()
+                    .where(mobile.provider_id==row_dict['provider_id']))
+                .scalar())
+            # If it does not exist, add it
+            if not trn_exists:
+                session.add(trn)
+            # If it already exists, get info for it, check if ref or status has changed 
+            # and only then update
+            else:
+                print(row_dict['provider_id'] + ' already exists.')
+                trn = session.query(mobile).filter_by(provider_id=row_dict['provider_id'])
+                # Update if ref or status has changed
+                if (trn.first().trn_ref_number!=str(row_dict['trn_ref_number'])
+                    or trn.first().trn_status!=row_dict['trn_status']):
+                    trn.update({**row_dict,**{'changed_user':add_table_args['changed_user']}})
+                    session.flush()
+                    print('Updated.')
+        
+        # After looping, commit
+        session.commit()
+    
+    #if exception, move file back and raise
     except:
+        _ = gdrive_service.files().update(
+                                        fileId=gdrive_file.get("id"),
+                                        addParents=folder_id,
+                                        removeParents=archive_id,
+                                        fields='id, parents').execute()
         raise
     finally:
         session.close()

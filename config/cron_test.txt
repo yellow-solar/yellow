@@ -1,0 +1,2 @@
+# Airtel statement import - best practice for imports
+*/2 * * * * cd yellow && ~/.venv/data-jobs/bin/python -m batch.mobilestatements  >> ../.log/mobilestatements.log 2>&1
