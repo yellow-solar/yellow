@@ -12,7 +12,7 @@ import pandas as pd
 from sqlalchemy import exists
 
 # Local libraries
-from batch.batch_modules.gdrive import (getFolderID, getFileIDs, 
+from googleapi.gdrive import (getFolderID, getFileIDs, 
                                   getCSV, setArchive)
 
 def statementDF(df, col_mapping):

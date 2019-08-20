@@ -15,13 +15,15 @@ import sqlalchemy as db
 import pandas as pd
 
 # Local application imports
-from batch.batch_modules.zohoAPI import ZohoAPI
+from yellowsync.API.zohoAPI import ZohoAPI
+from yellowsync.API.angazaAPI import AngazaAPI
 
-def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, form_link=None, if_exists='replace', df = None):
+def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, index_label = None, form_link=None, if_exists='replace', df = None):
     """ Download or import and sync table in Yellow DB """
     # if there is a csv in the filename, import rather than fetch:
     if schema == 'Angaza':
-        insert_df = pd.read_csv(f"../data/{table}.csv")
+        angaza = AngazaAPI()
+        insert_df = angaza.pullSnapshot(tablename = 'payments')
 
     elif schema == 'Mobile':
         insert_df = df
@@ -41,10 +43,16 @@ def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, form_
         print(f"Downloading zoho table {table}...")
         form_view = zoho.get(table, payload={'raw':'true',}) # via the trigger table
         if form_view.status_code == 200:
-            if "errorlist" not in form_view.text.lower():
-                form_json = json.loads(form_view.text)
-            else: 
+            if "errorlist" in form_view.text.lower():
                 raise Exception (f"Errorlist return in Zoho request for {table}")
+            elif "no such view" in form_view.text.lower():
+                raise Exception("No such table or form link")
+            else:
+                try:
+                    form_json = json.loads(form_view.text) 
+                except:
+                    raise
+      
         else:
             raise Exception (f"Request returned error code {form_view.status_code} in Zoho request for {table}")
 
@@ -75,12 +83,16 @@ def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, form_
     # Create engine for connections pool
     engine = db.create_engine(
         f"{db_cfg['driver']}{db_cfg['user']}:{db_cfg['passwd']}@{db_cfg['host']}/{schema}", 
-        echo = True)
+        # , echo = True
+        )
     
     # Insert full table
     with engine.connect() as connection:
         insert_df.to_sql(con=connection, name=table, 
+            index_label = index_label,
             if_exists=if_exists, index=False)
+
+    print(table + " inserted")
 
 
 

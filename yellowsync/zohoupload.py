@@ -15,8 +15,8 @@ import sys
 import pandas as pd
 
 # Import Yellow libaries
-from batch_modules import zohoAPI
-from batch_modules.zohoAPI import ZohoAPI, dfUploadSync, formDelete
+from yellowsync.API import zohoAPI
+from yellowsync.API.zohoAPI import ZohoAPI, dfUploadSync, formDelete
 
 def uploadForm(form, file, header_name=None, int_cols=[], slice_length=100, col_rename=None, row_filters={}, field_cutoff=[]):
     """ Upload a form to zoho given a form """

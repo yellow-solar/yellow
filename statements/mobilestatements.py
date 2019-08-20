@@ -24,12 +24,12 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.automap import automap_base
 
 # Local application imports
-from batch.batch_modules.statementsProcess import statementDF, uploadStatement
-from batch.batch_modules.yellowDB import yellowDBSync
-from batch.batch_modules.gdrive import (getFolderID, getFileIDs, 
+from statements.process import statementDF, uploadStatement
+from googleapi.gdrive import (getFolderID, getFileIDs, 
                                   getCSV, setArchive)
-from batch.batch_modules import gdrive
-from batch.batch_modules.zohoAPI import ZohoAPI
+from googleapi import gdrive
+from yellowsync.API.yellowDB import yellowDBSync
+from yellowsync.API.zohoAPI import ZohoAPI
 
 # Log timestamp
 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))

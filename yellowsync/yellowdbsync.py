@@ -14,46 +14,42 @@ from sqlalchemy.ext.declarative import declarative_base
 from pandas.io.json import json_normalize
 
 # Local application imports
-from batch_modules.yellowDB import yellowDBSync
+from yellowsync.API.yellowDB import yellowDBSync
 # from batch_modules.zohoAPI import ZohoAPI, dfUploadSync, formDelete
 
 # Zoho tables sync
+# Account balances
+yellowDBSync(
+    table = "All_Account_Balances",
+    schema = 'Zoho',
+    form_link = "Account_Balance",
+    insert_cols_rename={'Date_field':'Date'}
+)
+# Cashflows
 yellowDBSync(
     table = "Historic_Cashflows_Report",
     schema = 'Zoho',
     form_link = "Add_Historic_Cashflow",
-    insert_cols = [
-        'Account_Paid_From',
-        'Account_Paid_Into',    
-        'Cashflow_Category',
-        'Amount_in_MK',
-        'Amount_in_ZAR',
-        'Amount_in_USD',
-        'Description',
-        'COMMENTS',
-        ],
-    insert_cols_rename = {'ID':'zoho_ID','COMMENTS':'Comments'}
+    insert_cols_rename = {'ID':'zoho_ID','COMMENTS':'Comments', 'Date1':'Trn_Date'}
 )
-#     zoho_cols_rename = {'angaza_id':'client_external_id'}
-# )
 
 ### Angaza tables
 # clients table
-yellowDBSync(
-    table = "clients",
-    schema = 'Angaza',
-    # form_link = "Add_Historic_Cashflow",
-    insert_cols = ['angaza_id', 'organization','client_name',
-    'phone_number','account_numbers','recorder','date_created_utc',	
-    'archived',	
-    ],
-    insert_cols_rename = {'angaza_id':'client_external_id'}
-)
+# yellowDBSync(
+#     table = "clients",
+#     schema = 'Angaza',
+#     insert_cols = ['angaza_id', 'organization','client_name',
+#     'phone_number','account_numbers','recorder','date_created_utc',	
+#     'archived',	
+#     ],
+#     insert_cols_rename = {'angaza_id':'client_external_id'}
+# )
 
 #payments table
 yellowDBSync(
     table = "payments",
     schema = 'Angaza',
+    index_label='angaza_id'
     # form_link = "Add_Historic_Cashflow",
     # insert_cols = ['angaza_id', 'organization','client_name',
     # 'phone_number','account_numbers','recorder','date_created_utc',	
