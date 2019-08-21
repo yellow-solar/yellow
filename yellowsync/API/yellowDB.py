@@ -18,12 +18,15 @@ import pandas as pd
 from yellowsync.API.zohoAPI import ZohoAPI
 from yellowsync.API.angazaAPI import AngazaAPI
 
-def yellowDBSync(table, schema, insert_cols=None, insert_cols_rename=None, index_label = None, form_link=None, if_exists='replace', df = None):
+def yellowDBSync(table, schema, insert_cols=None, 
+                insert_cols_rename=None, index_label = None, 
+                form_link=None, if_exists='replace', df = None):
     """ Download or import and sync table in Yellow DB """
     # if there is a csv in the filename, import rather than fetch:
     if schema == 'Angaza':
         angaza = AngazaAPI()
-        insert_df = angaza.pullSnapshot(tablename = 'payments')
+        print(f'Downloading {table}')
+        insert_df = angaza.pullSnapshot(tablename = table)
 
     elif schema == 'Mobile':
         insert_df = df

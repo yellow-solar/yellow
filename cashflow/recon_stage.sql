@@ -1,4 +1,3 @@
-
 -- Transaction lines for airtel recon
 drop table if exists Sandbox.mobile_transactions_recon;
 create table Sandbox.mobile_transactions_recon as
@@ -21,11 +20,10 @@ from
 			( 
 			select * from Finance.mobile m
 			left join Angaza.payments p on p.provider_transaction = m.provider_id
+				 and p.reversal is null
 			where trn_type = 'MR'
-				-- and m.trn_status <> 'Transaction Failed'
-				and m.trn_ref_number not like 'RO%%'
-                and p.reversal is null
-                
+				and m.trn_status <> 'Transaction Failed'
+				and m.trn_ref_number not like 'RO%%'    
 			) y
             
 		 where y.angaza_id is null

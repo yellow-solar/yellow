@@ -51,7 +51,10 @@ class AngazaAPI:
             )
             return(snapshot_df)
         else:
-            raise ValueError("Request to " + tablename + " failed with error code: " + str(snapshot.status_code))
+            raise ValueError(
+                "Request to " + tablename 
+                + " failed with error code: " + str(snapshot.status_code)
+                )
 
 # Test
 # angaza = AngazaAPI()

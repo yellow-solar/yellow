@@ -1,2 +1,2 @@
-# Airtel statement import - best practice project script calling
-*/2 * * * * cd yellow && ~/.venv/data-jobs/bin/python -m statements.mobilestatements  >> ../.log/mobilestatements.log 2>&1
+# Cashflow recon
+30 8 * * * cd yellow && ~/.venv/data-jobs/bin/python -m cashflow.cashflowrecon live >> ../.log/cashflowrecon.log 2>&1

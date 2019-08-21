@@ -8,28 +8,23 @@ import pandas as pd
 
 # local
 from googleapi.gmail import Gmail
+from tools.html import htmlTableBody
 
 # Create email service
-gmail = Gmail('config/mail-93851bb46b8d.json','ben@yellow.africa')
+gmail = Gmail('config/mail-93851bb46b8d.json', 'ben@yellow.africa')
 
 ### Test hybrid html
 # Read test table
 df = pd.read_csv('data/test_table.csv')
 df = df[df['trn_date'] > '2019-08-16']
 df = df.sort_values('trn_date',ascending=False)
+df = df.fillna('')
 
-# Remove index 
-df_html = df.to_html(index=False,classes='table table-striped')
+# Create HTML body
+html = htmlTableBody("This is a table", df, 'blueTable')
 
-# Create html
-html = f"""
-    <html><head>Hello, Friend.</head>
-    <p>Here is your data:</p>
-    {df_html}
-    <p>Regards,</p>
-    <p>Me</p>
-    </body></html>
-"""
+with open('html_table.html', 'w') as htmlfile:
+    htmlfile.write(html)
 
 # Create multimessage to send
 msg = gmail.create_message(
@@ -37,10 +32,9 @@ msg = gmail.create_message(
     to = 'ben@yellow.africa',
     subject = 'test message',
     message_text = 'please open as HTML email',
-    html=df_html,
+    html=html,
 )
 
 # Send test
-sent = gmail.send_message(msg, 
-    user_id='ben@yellow.africa')
-print(sent) 
+sent = gmail.send_message(msg)
+# print(sent) 

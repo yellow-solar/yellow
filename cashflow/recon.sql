@@ -47,15 +47,25 @@ left join max_seq m
 left join std_bank_sweeps std
 	on std.Trn_Date = d.trn_date
 ) 
-select rp.provider, rp.provider_acc_no, rp.trn_date, 
-	rp.sweep_amount, rp.std_bnk_received, 
+select rp.provider Provider, 
+	rp.provider_acc_no Account, 
+	rp.trn_date TrnDate, 
+	rp.sweep_amount ProviderSweep, 
+	rp.std_bnk_received BankSweep, 
     case 
 		when rp.sweep_amount is not null and rp.std_bnk_received is null then "BANK NOT YET CAPTURED" 
 		when rp.sweep_amount <> rp.std_bnk_received then "SWEEP NOT RECONCILED" 
 		when rp.sweep_amount is null and rp.std_bnk_received is null then "NO SWEEP" 
-		else "RECONCILES" end sweep_recon,
-	rp.provider_final_balance, rp.provider_surplus_deficit, 
-    rp.trn_amount_cum, rp.sweep_amount_cum,
-	rp.day_trn_amount, rp.day_trn_count, rp.unprocessed_trn_amount, rp.unprocessed_trn_count
+		else "RECONCILES" end ReconCheck,
+	rp.provider_final_balance EndofDayBal, 
+	rp.provider_surplus_deficit SurplusOrDeficit, 
+/* need to get total for month */
+	rp.day_trn_amount TrnAmt, 
+	rp.day_trn_count TrnCount, 
+	rp.unprocessed_trn_amount ToProcessTrnAmt, 
+	rp.unprocessed_trn_count ToProcessTrnCount
 from report rp
+order by rp.provider
+	, rp.trn_date desc
+limit 14
 ;

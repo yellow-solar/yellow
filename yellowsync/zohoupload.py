@@ -17,8 +17,11 @@ import pandas as pd
 # Import Yellow libaries
 from yellowsync.API import zohoAPI
 from yellowsync.API.zohoAPI import ZohoAPI, dfUploadSync, formDelete
+from yellowsync.API.angazaAPI import AngazaAPI
 
-def uploadForm(form, file, header_name=None, int_cols=[], slice_length=100, col_rename=None, row_filters={}, field_cutoff=[]):
+def uploadForm(form, file, header_name=None, int_cols=[], 
+                slice_length=100, col_rename=None, row_filters={}, 
+                field_cutoff=[], round_dict=None, fresh_data=False):
     """ Upload a form to zoho given a form """
 
     # Fetch zoho cfg and setup API connection
@@ -31,7 +34,12 @@ def uploadForm(form, file, header_name=None, int_cols=[], slice_length=100, col_
 
     ### Data table
     # Import data from file
-    data = pd.read_csv(f'../data/{file}.csv')
+    if fresh_data:
+        angaza = AngazaAPI()
+        data = angaza.pullSnapshot(tablename = file)
+    else:
+        data = pd.read_csv(f'../data/{file}.csv')
+    
     # Fill NA with blank string and correct strings 
     # (NB Blank strings do not send to Zoho to increaser performance)
     data = data.fillna('')
@@ -56,7 +64,10 @@ def uploadForm(form, file, header_name=None, int_cols=[], slice_length=100, col_
     # Convert the float type which are now strings (due to fillna in previous step) to integer
     for col in int_cols:
         data[col] = data[col].replace('[^0-9]','',regex=True).apply(lambda x: int(x) if x != '' else x)
-    
+    # Round floats to necessary decimal places
+    if round_dict is not None:
+        data = data.round(round_dict)
+
     # Time the API queries
     t1 = datetime.now()
 
@@ -76,16 +87,21 @@ def uploadForm(form, file, header_name=None, int_cols=[], slice_length=100, col_
     return(upload)
 
 # Run based on input
-def upload_switch(form):
-    """ the dictionary based dispatch table does not work in this case 
-            I actually want to run the single function with different
-            parameters depending on the switch value
+def uploadSwitch(form):
+    """ 
+    the dictionary based dispatch table does not work in this case 
+    I actually want to run the SAME function with different
+    parameters depending on the switch value, rather than a different
+    function depending on the switch value
     """
     pass
 # upload_switch(form)
 
 if __name__ == "__main__":
-    """ when Cron calls the zoho script, it must call with the form name input """
+    """ 
+    when Cron calls the zoho script, it must call with the form 
+    name input 
+    """
     # assign form from sys.args (1st is the )
     if len(sys.argv) > 1:
         form = sys.argv[1]
@@ -106,6 +122,7 @@ if __name__ == "__main__":
                 'next_of_kin_contact_number',
                 'customer_age',],
             slice_length = 500,
+            round_dict = {'hour_price':8},
             )
 
     # Agents import
