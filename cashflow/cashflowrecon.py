@@ -26,7 +26,8 @@ from googleapi.gmail import Gmail
 from tools.html import htmlTableBody
 
 USER = 'system@yellow.africa'
-TO = 'ben@yellow.africa'
+TECH_TO = 'tech-support@yellow.africa'
+TASK_TO = 'malawi-ops@yellow.africa'
 
 # Sync the relevant data into DB
 # Angaza payments
@@ -102,9 +103,9 @@ if __name__ == "__main__":
     # Create multimessage to send
     recon_msg = gmail.create_message(
         sender = USER,
-        to = TO,
-        subject = 'test message',
-        message_text = 'please open as HTML email',
+        to = TECH_TO,
+        subject = 'Cashflow: recon',
+        message_text = 'Please open as HTML email',
         html=html,
     )
     recon_send = gmail.send_message(recon_msg)
@@ -117,7 +118,7 @@ if __name__ == "__main__":
         # Create multimessage to send
         msg = gmail.create_message(
             sender = USER,
-            to = TO,
+            to = TASK_TO,
             subject = 'Task: Statement Downloads',
             message_text = 'Please open as HTML email',
             html=html,
