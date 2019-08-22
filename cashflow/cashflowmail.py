@@ -20,9 +20,9 @@ from tools.html import htmlTxtandTable
 from tools.exporters import exportCSV
 
 USER = 'system@yellow.africa'
-TASK_TO = 'ben@yellow.africa'
-# REPORT_TO = 'tech-support@yellow.africa'
-REPORT_TO = 'ben@yellow.africa'
+TASK_TO = 'tasks@yellow.africa'
+REPORT_TO = 'tech-support@yellow.africa'
+# REPORT_TO = 'ben@yellow.africa'
 
 RECON_EMAIL_COLS = ['TrnDate', 
     'MatchedPmt', 
