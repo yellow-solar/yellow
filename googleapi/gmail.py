@@ -5,8 +5,11 @@
 
 #  standard
 import os, json, base64
+from email import encoders
+from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 
 # third party
 from httplib2 import Http
@@ -35,7 +38,7 @@ class Gmail():
         self.service = discovery.build('gmail', 'v1',
             credentials=self.credentials)
 
-    def create_message(self, sender, to, subject, message_text, html=None):
+    def create_message(self, sender, to, subject, message_text, html=None, files={}):
         """Create a message for an email.
 
         Args:
@@ -47,14 +50,32 @@ class Gmail():
         Returns:
             An object containing a base64url encoded email object.
         """
-        if html is None:
-            message = MIMEText(message_text)
-        else :
-            message = MIMEMultipart(
-                "alternative", None, [MIMEText(message_text), MIMEText(html,'html')])
+        message = MIMEMultipart()
         message['to'] = to
         message['from'] = sender
         message['subject'] = subject
+
+        # Attach parts of email
+        # html
+        if html is None:
+            # plain text
+            message.attach(MIMEText(message_text))
+        else:
+            html_part = MIMEText(html,'html')
+            message.attach(html_part)
+        
+        # file attachments
+        for filename in files.keys():
+            attachment = MIMEBase('application', "octet-stream")
+            # attachment.set_payload(open(f"{files[filename]}", "rb").read())
+            attachment.set_payload(files[filename])
+            encoders.encode_base64(attachment)
+            attachment.add_header(
+                'Content-Disposition',
+                f"attachment; filename= {filename}",
+                )
+            message.attach(attachment)
+
         return {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}
         # msg.set_payload(contents)
         # Encode the payload using Base64.  This line is from here:

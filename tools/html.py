@@ -2,8 +2,8 @@
         - create HTML body for email, use with gmail API
 """
 
-# Create html
-def htmlTableBody(heading, df, style):
+# Create cahflow email recon html
+def htmlTxtandTable(heading, df, style, paragaph = ""):
     # convert table as html
     df_html = df.to_html(index=False,classes=style)
     #read table style
@@ -15,8 +15,12 @@ def htmlTableBody(heading, df, style):
             <head>{heading}
                 <style>{style}</style>
             </head>
+            <p>{paragaph}</p>
             {df_html}
         </html>
     """
     return(html)
 
+def paragraphBuilder(p):
+    p
+    return(p)

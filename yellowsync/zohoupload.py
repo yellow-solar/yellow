@@ -18,6 +18,7 @@ import pandas as pd
 from yellowsync.API import zohoAPI
 from yellowsync.API.zohoAPI import ZohoAPI, dfUploadSync, formDelete
 from yellowsync.API.angazaAPI import AngazaAPI
+from yellowsync.API.yellowDB import yellowDBSync
 
 def uploadForm(form, file, header_name=None, int_cols=[], 
                 slice_length=100, col_rename=None, row_filters={}, 

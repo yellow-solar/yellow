@@ -1,2 +1,2 @@
 # Cashflow recon
-30 8 * * * cd yellow && ~/.venv/data-jobs/bin/python -m cashflow.cashflowrecon live >> ../.log/cashflowrecon.log 2>&1
+30 8 * * * cd yellow && ~/.venv/data-jobs/bin/python -m cashflow.cashflowrecon live && ~/.venv/data-jobs/bin/python -m cashflow.cashflowmail >> ../.log/cashflowrecon.log 2>&1
