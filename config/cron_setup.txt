@@ -18,4 +18,4 @@
 */2 * * * * cd yellow && ~/.venv/data-jobs/bin/python -m statements.mobilestatements  >> ../.log/mobilestatements.log 2>&1
 
 # Cashflow recon
-30 9,2 * * * cd yellow && ~/.venv/data-jobs/bin/python -m cashflow.cashflowrecon live && ~/.venv/data-jobs/bin/python -m cashflow.cashflowmail >> ../.log/cashflowrecon.log 2>&1
+0 9,15 * * * cd yellow && ~/.venv/data-jobs/bin/python -m cashflow.cashflowrecon live && ~/.venv/data-jobs/bin/python -m cashflow.cashflowmail >> ../.log/cashflowrecon.log 2>&1
