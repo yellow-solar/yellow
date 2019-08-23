@@ -21,7 +21,7 @@ from tools.exporters import exportCSV
 
 USER = 'system@yellow.africa'
 TASK_TO = 'tasks@yellow.africa'
-REPORT_TO = 'tech-support@yellow.africa'
+REPORT_TO = 'ben@yellow.africa'
 # REPORT_TO = 'ben@yellow.africa'
 
 RECON_EMAIL_COLS = ['TrnDate', 
@@ -54,7 +54,7 @@ if __name__ == "__main__":
                 .fillna('')
                 .round(0)
             )
-
+        
         # pull unprocessed transactions for manual action
         print("Unprocessed trns...")
         with open("cashflow/sql/trn_to_process.sql", 'r') as sql:
@@ -81,6 +81,24 @@ if __name__ == "__main__":
                 .fillna('')
             )
 
+        # pull balance recon table    
+        print("Balance recon query...")
+        with open("cashflow/sql/balance_recon.sql", 'r') as sql:
+            query = sql.read().replace('%','%%')
+            balance_summary = (pd.read_sql_query(query, con=conn)
+                .round(0)
+            )
+
+        # email 30 days of transactions from account    
+        print("Std bnk trn query...")
+        query = 'select * from Finance.standard_bank_account_trns limit 30'
+        with open("cashflow/sql/recon_trn_summary.sql", 'r') as sql:
+            query = sql.read().replace('%','%%')
+            std_bnk_trns = (pd.read_sql_query(query, con=conn)
+                .fillna('')
+                .round(0)
+            )
+        
     # Create email service
     gmail = Gmail('config/mail-93851bb46b8d.json', USER)
 
@@ -100,9 +118,8 @@ if __name__ == "__main__":
         task_send = gmail.send_message(msg)
         print("Missing statement. Task email sent")
 
+    # Trn Recon Em
     # Logic to define table heading and paragraphs
-    # Check what sentences need to go into email  
-    # Only heading for now
     table_heading = ("Yesterdays Cashflow Recon Status: "
         + recon_summary.loc[0,'TrnRecon'])
     
@@ -115,7 +132,7 @@ if __name__ == "__main__":
     recon_msg = gmail.create_message(
         sender = USER,
         to = REPORT_TO,
-        subject = 'Cashflow: recon',
+        subject = 'Cashflow: Mobile Money Recon',
         message_text = 'Please open as HTML email',
         html=html,
         # send recon table as csv attachment
@@ -125,3 +142,30 @@ if __name__ == "__main__":
                 },
     )
     recon_send = gmail.send_message(recon_msg)
+
+    # Balance Recon Email
+    latest_deficit = (
+        balance_summary[~balance_summary['ActualBalance'].isnull()]
+        .loc[0,'AccountBalanceDeficit'])
+    # Logic to define table heading and paragraphs
+    bal_table_heading = ("Latest's balance deficit: "
+        + str(latest_deficit))
+    
+    # Create recon email to be sent morning
+    html = htmlTxtandTable(
+        bal_table_heading, 
+        balance_summary.loc[0:14], 
+        style='blueTable')
+    # Create multimessage to send
+    recon_msg = gmail.create_message(
+        sender = USER,
+        to = REPORT_TO,
+        subject = 'Cashflow: STD BNK balance',
+        message_text = 'Please open as HTML email',
+        html=html,
+        # send recon table as csv attachment
+        files = {'balancerecon.csv':exportCSV(balance_summary),
+                'stdbnktrns.csv':exportCSV(std_bnk_trns),
+                },
+    )
+    stdbnk_send = gmail.send_message(recon_msg)

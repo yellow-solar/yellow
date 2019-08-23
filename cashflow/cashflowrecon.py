@@ -34,6 +34,12 @@ def cashflowDataSync():
         schema = 'Angaza',
         index_label='angaza_id',
     )
+    # Agent payments
+    yellowDBSync(
+        table = "All_Agent_Payments",
+        schema = 'Zoho',
+        form_link = "Agent_Payments",
+    )
     # Cashflows
     yellowDBSync(
         table = "Historic_Cashflows_Report",
@@ -73,9 +79,17 @@ if __name__ == "__main__":
     # Open connection to DB to execute recon
     with engine.connect() as conn:
         # create staging table in sandbox
-        print("Transactions query...")
-        staging_query = open("cashflow/sql/recon_transactions.sql", 'r').read()
-        resultProxy = conn.execute(staging_query.replace('%','%%'))     
+        # print("Transactions query...")
+        # with open("cashflow/sql/standard_bank_account_trns.sql", 'r') as sql:
+        #     query = sql.read().replace('%','%%')
+        #     resultProxy = conn.execute(query)
+
+        # update the views
+        print("Summary query...")
+        with open("cashflow/sql/standard_bank_account_trns.sql", 'r') as sql:
+            query = sql.read().replace('%','%%')
+            resultProxy = conn.execute(query)
+        print(resultProxy)
         
     # Log timestamp
     print("End: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))

@@ -1,4 +1,5 @@
 -- Transaction lines for airtel recon
+-- THIS SHOULD PROBABLY BE A VIEW RATHER
 drop table if exists Finance.mobile_trn_recon;
 create table Finance.mobile_trn_recon as
 select x.*

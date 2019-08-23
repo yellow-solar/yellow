@@ -96,6 +96,8 @@ def yellowDBSync(table, schema, insert_cols=None,
             if_exists=if_exists, index=False)
 
     print(table + " inserted")
+    status = 200
+    return(status)
 
 
 
