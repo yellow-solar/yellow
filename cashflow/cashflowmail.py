@@ -12,16 +12,16 @@ from datetime import datetime
 # third party
 import sqlalchemy as db
 import pandas as pd
-pd.set_option('display.float_format', lambda x: '%.2f' % x)
 
 # local
 from googleapi.gmail import Gmail
 from tools.html import htmlTxtandTable
 from tools.exporters import exportCSV
 
+# Set options for emails
+pd.options.display.float_format = '{:,.2f}'.format
 USER = 'system@yellow.africa'
-TASK_TO = 'tasks@yellow.africa'
-REPORT_TO = 'ben@yellow.africa'
+REPORT_TO = 'tech-support@yellow.africa'
 # REPORT_TO = 'ben@yellow.africa'
 
 RECON_EMAIL_COLS = ['TrnDate', 
@@ -35,6 +35,9 @@ RECON_EMAIL_COLS = ['TrnDate',
 ]
 
 if __name__ == "__main__":
+    # Log timestamp
+    print("Start: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
     # Create engine for connections
     os.environ['env'] = 'd'
     with open('config/config.json', 'r') as f:
@@ -72,15 +75,6 @@ if __name__ == "__main__":
                 .fillna('')
             )
 
-        # pull missing statements 
-        print("Statement check...")
-        with open("cashflow/sql/missing_statements.sql", 'r') as sql:
-            query = sql.read().replace('%','%%')
-            df_missing = (pd
-                .read_sql_query(query, con=conn)
-                .fillna('')
-            )
-
         # pull balance recon table    
         print("Balance recon query...")
         with open("cashflow/sql/balance_recon.sql", 'r') as sql:
@@ -92,44 +86,25 @@ if __name__ == "__main__":
         # email 30 days of transactions from account    
         print("Std bnk trn query...")
         query = 'select * from Finance.standard_bank_account_trns limit 30'
-        with open("cashflow/sql/recon_trn_summary.sql", 'r') as sql:
-            query = sql.read().replace('%','%%')
-            std_bnk_trns = (pd.read_sql_query(query, con=conn)
-                .fillna('')
-                .round(0)
-            )
+        std_bnk_trns = (pd.read_sql_query(query, con=conn)
+            .fillna('')
+            .round(0)
+        )
         
     # Create email service
     gmail = Gmail('config/mail-93851bb46b8d.json', USER)
 
-    # Check if statements are missing
-    if len(df_missing) > 0:
-        # Html table
-        html = htmlTxtandTable("Download the following statements:", 
-                                df_missing, style='blueTable')
-        # Create multimessage to send
-        msg = gmail.create_message(
-            sender = USER,
-            to = TASK_TO,
-            subject = 'Task: Statement Downloads',
-            message_text = 'Please open as HTML email',
-            html=html,
-        )
-        task_send = gmail.send_message(msg)
-        print("Missing statement. Task email sent")
-
-    # Trn Recon Em
+    # Trn Recon Email
     # Logic to define table heading and paragraphs
     table_heading = ("Yesterdays Cashflow Recon Status: "
         + recon_summary.loc[0,'TrnRecon'])
-    
     # Create recon email to be sent morning
     html = htmlTxtandTable(
         table_heading, 
         recon_summary.loc[0:14, RECON_EMAIL_COLS], 
         style='blueTable')
     # Create multimessage to send
-    recon_msg = gmail.create_message(
+    trn_recon_msg = gmail.create_message(
         sender = USER,
         to = REPORT_TO,
         subject = 'Cashflow: Mobile Money Recon',
@@ -141,11 +116,11 @@ if __name__ == "__main__":
                 'paymentstoprocess.csv':exportCSV(df_toprocess),
                 },
     )
-    recon_send = gmail.send_message(recon_msg)
-
+    
     # Balance Recon Email
     latest_deficit = (
         balance_summary[~balance_summary['ActualBalance'].isnull()]
+        .reset_index(drop=True)
         .loc[0,'AccountBalanceDeficit'])
     # Logic to define table heading and paragraphs
     bal_table_heading = ("Latest's balance deficit: "
@@ -168,4 +143,7 @@ if __name__ == "__main__":
                 'stdbnktrns.csv':exportCSV(std_bnk_trns),
                 },
     )
+
+    # Send emails
+    trn_recon_sned = gmail.send_message(trn_recon_msg)
     stdbnk_send = gmail.send_message(recon_msg)

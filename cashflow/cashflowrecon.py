@@ -18,6 +18,12 @@ import pandas as pd
 from yellowsync.API.yellowDB import yellowDBSync
 from yellowsync.API.zohoAPI import ZohoAPI
 from yellowsync.API.angazaAPI import AngazaAPI
+from googleapi.gmail import Gmail
+from tools.html import htmlTxtandTable
+from tools.exporters import exportCSV
+
+USER = 'system@yellow.africa'
+TASK_TO = 'tasks@yellow.africa'
 
 # Sync the relevant data into DB
 # Angaza payments
@@ -79,10 +85,10 @@ if __name__ == "__main__":
     # Open connection to DB to execute recon
     with engine.connect() as conn:
         # create staging table in sandbox
-        # print("Transactions query...")
-        # with open("cashflow/sql/standard_bank_account_trns.sql", 'r') as sql:
-        #     query = sql.read().replace('%','%%')
-        #     resultProxy = conn.execute(query)
+        print("Transactions query...")
+        with open("cashflow/sql/recon_transactions.sql", 'r') as sql:
+            query = sql.read().replace('%','%%')
+            resultProxy = conn.execute(query)
 
         # update the views
         print("Summary query...")
@@ -90,6 +96,34 @@ if __name__ == "__main__":
             query = sql.read().replace('%','%%')
             resultProxy = conn.execute(query)
         print(resultProxy)
-        
+
+        # pull missing statements 
+        print("Statement check...")
+        with open("cashflow/sql/missing_statements.sql", 'r') as sql:
+            query = sql.read().replace('%','%%')
+            df_missing = (pd
+                .read_sql_query(query, con=conn)
+                .fillna('')
+            )
+
+    # Create email service
+    gmail = Gmail('config/mail-93851bb46b8d.json', USER)
+
+    # Check if statements are missing
+    if len(df_missing) > 0:
+        # Html table
+        html = htmlTxtandTable("Download the following statements:", 
+                                df_missing, style='blueTable')
+        # Create multimessage to send
+        msg = gmail.create_message(
+            sender = USER,
+            to = TASK_TO,
+            subject = 'Task: Statement Downloads',
+            message_text = 'Please open as HTML email',
+            html=html,
+        )
+        task_send = gmail.send_message(msg)
+        print("Missing statement. Task email sent")
+
     # Log timestamp
     print("End: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
