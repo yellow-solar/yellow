@@ -1,9 +1,11 @@
 # Standard and 3rd party libraries
-import os
+import os, re, sys, json
+import time
+
+# 3rd party
 import pandas as pd
 import numpy as np
-# import re
-import time
+from pandas.io.json import json_normalize
 import requests
 import xml.etree.ElementTree as ET
 
@@ -83,6 +85,7 @@ class ZohoAPI:
 
 # function to delete a form from zoho account
 def formDelete(form, zoho):
+    """ Delete form from zoho with formname as input """
     print("Deleting...")
     delete_request = zoho.delete(form,'ID != null') #ID is never null so should delete all
     if delete_request.status_code == 200:
@@ -100,12 +103,18 @@ def formDelete(form, zoho):
 # General syncronous method
 # The XML RPC API can probably take up 1.4m. characters maximum.
 # Have to make sure the slice length use keeps each xml under this limit then
-
+# WRITE AN IF TO CHECK IF XMLSTRING < 1,350,000 TO ENSURE IT WILL WORK
 # the relationship depends on # columns, # columns with values etc.
 
-# you can probably slim down the payload by only submitting columns with values - may be lots of blanks - but still limited
 # The return value is a list, each value in the list is a JSON structured as {response:{status:<status_code>, text:<XMLresponse>}}
 def dfUploadSync(df, form, zoho, slice_length=500):
+    """ Function to upload dataframe to zoho 
+
+            df: pandas dataframe
+            form: target form to upload into
+            zoho: API object of type ZohoAPI (custom yellow function) 
+            slice_length: chunks to slice df and add at a time to zoho 
+    """
     responses = []
     response_count = 0
     
@@ -144,3 +153,22 @@ def dfUploadSync(df, form, zoho, slice_length=500):
 
     print("Completed request.")       
     return(responses)
+
+def zohoToDF(report_request, form_link):
+    if report_request.status_code == 200:
+        if "errorlist" in report_request.text.lower():
+            raise Exception (f"Errorlist return in Zoho request")
+        elif "no such view" in report_request.text.lower():
+            raise Exception("No such table or form link")
+        else:
+            try:
+                form_json = json.loads(report_request.text) 
+            except:
+                raise
+    
+    else:
+        raise Exception (f"Request returned error code {report_request.status_code} in Zoho request for {form_link}")
+
+    # Convert JSON to pandas dataframe and return
+    df = json_normalize(form_json[form_link])
+    return(df)

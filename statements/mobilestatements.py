@@ -65,7 +65,7 @@ Base = automap_base()
 Base.prepare(engine, reflect=True)
 
 
-### ACTION
+### Airtel Malawi Statements
 # Search for specific folder name - e.g. airtel list
 FOLDER_NAME = '1. Airtel Malawi Statements'
 FOLDER_ID = getFolderID(FOLDER_NAME, gdrive_service)

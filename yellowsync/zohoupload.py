@@ -23,7 +23,7 @@ from yellowsync.API.yellowDB import yellowDBSync
 def uploadForm(form, file, header_name=None, int_cols=[], 
                 slice_length=100, col_rename=None, row_filters={}, 
                 field_cutoff=[], round_dict=None, fresh_data=False):
-    """ Upload a form to zoho given a form """
+    """ Upload an Angaza table to zoho given a form """
 
     # Fetch zoho cfg and setup API connection
     with open('config/config.json', 'r') as f:
@@ -76,7 +76,7 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     # delete = formDelete(form, zoho)
     delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
 
-    # Run the synchronous XML upload with slide length of 500 rows
+    # Run the synchronous XML upload with slide length
     if delete.status_code==200:
         upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
     else:

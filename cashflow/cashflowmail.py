@@ -26,7 +26,9 @@ REPORT_TO = 'tech-support@yellow.africa'
 
 RECON_EMAIL_COLS = ['TrnDate', 
     'MatchedPmt', 
+    'MonthPmtAmnt',
     'SweepRecon', 
+    'MobileFinalBalance',
     'TrnRecon', 
     'AngazaPaymentsToProcess', 
     'HasMissingMobileMoneyTrns', 
@@ -145,5 +147,9 @@ if __name__ == "__main__":
     )
 
     # Send emails
-    trn_recon_sned = gmail.send_message(trn_recon_msg)
-    stdbnk_send = gmail.send_message(recon_msg)
+    try:
+        trn_recon_send = gmail.send_message(trn_recon_msg)
+        stdbnk_send = gmail.send_message(recon_msg)
+    except: 
+        raise
+
