@@ -82,7 +82,8 @@ def processBatchDF(batch_result, sheets_config):
         else:
             sheet_cols = df.loc[0]
         # Replace whitespace and remove non-alphanumerics
-        df.columns = [re.sub(r'\W','',col.replace(' ','_')) for col in sheet_cols] 
+        sheet_cols_alphanum = [re.sub(r'\W',' ',col).rstrip() for col in sheet_cols] 
+        df.columns = [re.sub(r' +',' ',col).replace(' ','_') for col in sheet_cols_alphanum] 
         # drop empty column names, if any
         if '' in df.columns:
             df = df.drop('',axis=1)
