@@ -85,9 +85,9 @@ if __name__ == "__main__":
                 .round(0)
             )
 
-        # email 30 days of transactions from account    
+        # email all transactions from account   TODO: might be better to send a number of days rather
         print("Std bnk trn query...")
-        query = 'select * from Finance.standard_bank_account_trns limit 30'
+        query = 'select * from Finance.standard_bank_account_trns'
         std_bnk_trns = (pd.read_sql_query(query, con=conn)
             .fillna('')
             .round(0)
