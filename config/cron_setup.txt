@@ -11,7 +11,7 @@
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Stock_Data_Import             >> ../.log/zoho-sync.log 2>&1
 40 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Dolo_Scores                   >> ../.log/zoho-sync.log 2>&1
 # Agent recruitment zoho sync
-0 */2 * * * cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.recruitment        >> ../.log/cashflowrecon.log 2>&1
+0 */2 * * * cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.recruitment        >> ../.log/recruitment.log 2>&1
 
 # Yellow jobs
 0 6,9,12,15,18 * * *    cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.periodsupdate                     >> ../.log/yellow-jobs.log 2>&1
