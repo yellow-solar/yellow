@@ -1,6 +1,13 @@
 drop view if exists Finance.standard_bank_account_trns;
 create view Finance.standard_bank_account_trns as
-select x.*
+select Account_Paid_From
+	, Account_Paid_Into 
+	, Trn_Date
+	, Amount_MWK
+	, sum(Amount_MWK) over (order by Trn_Date) Cum_Amount_MWK
+	, Cashflow_Category
+	, Description
+	, Comments
 from
 	(
 	select Account_Paid_From
@@ -34,3 +41,5 @@ from
 
 order by x.Trn_Date desc
 ;
+
+select * from Finance.standard_bank_account_trns;
