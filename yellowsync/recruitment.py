@@ -21,17 +21,17 @@ from googleapi.sheets import GSheet, processBatchDF
 # CONFIGURATION OF TESTS REQUIRED TO POPULATE ZOHO
 AGENT_TESTS_GSHEET_ID = '1l0rxY-SR0e9vW8n4Ox4-EwRC-H3JvdoAL6fDb3Z86FY'
 SHEETS_CONFIG = {
-    # 'Agent_Recruitment_Test1':{
-    #     'report':'Agent_Recruitment_Test1_Report',
-    #     'timestamps': ['Timestamp'],
-    #     'index_col':'Timestamp',
-    # },
-    # 'Agent_Recruitment_Test2':{
-    #     'report':'Agent_Recruitment_Test2_Report',
-    #     'columns': ['Timestamp','Score','Input your 4-digit Yellow Agent ID'],
-    #     'timestamps': ['Timestamp'],
-    #     'index_col':'Timestamp',
-    # },
+    'Agent_Recruitment_Test1':{
+        'report':'Agent_Recruitment_Test1_Report',
+        'timestamps': ['Timestamp'],
+        'index_col':'Timestamp',
+    },
+    'Agent_Recruitment_Test2':{
+        'report':'Agent_Recruitment_Test2_Report',
+        'columns': ['Timestamp','Score','Input your 4-digit Yellow Agent ID'],
+        'timestamps': ['Timestamp'],
+        'index_col':'Timestamp',
+    },
     'Agent_Recruitment_Test3':{
         'report':'Agent_Recruitment_Test3_Report',
         'timestamps': ['Timestamp'],
