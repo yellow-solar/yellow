@@ -10,6 +10,7 @@ Note:
 # Standard and 3rd party libary imports
 import os
 import json
+from datetime import datetime
 from pandas.io.json import json_normalize
 import sqlalchemy as db
 import pandas as pd
@@ -89,6 +90,11 @@ def yellowDBSync(table, schema, insert_cols=None,
         # , echo = True
         )
     
+    # If appending rows to DB table then need an added time column
+    if if_exists != 'replace':
+        insert_df['added_datetime'] = datetime.now()
+        table = table+'_Backup'
+        
     # Insert full table
     with engine.connect() as connection:
         insert_df.to_sql(con=connection, name=table, 

@@ -1,2 +1,2 @@
-# Cashflow recon
-30 8 * * * cd yellow && ~/.venv/data-jobs/bin/python -m cashflow.cashflowrecon live && ~/.venv/data-jobs/bin/python -m cashflow.cashflowmail >> ../.log/cashflowrecon.log 2>&1
+# Backup specific zoho tables - midnight every day
+0 0 * * * cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.ofeefeebackup        >> ../.log/ofeefeebackup.log 2>&1

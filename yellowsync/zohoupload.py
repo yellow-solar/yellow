@@ -44,6 +44,9 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     # Fill NA with blank string and correct strings 
     # (NB Blank strings do not send to Zoho to increaser performance)
     data = data.fillna('')
+    # Round floats to necessary decimal places
+    if round_dict is not None:
+        data = data.round(round_dict)
 
     # Replace the '-' with '_' to match the Zoho field index
     data.columns = [x.replace('-','_').replace('/','_').rstrip() for x in data.columns.values]
@@ -65,9 +68,7 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     # Convert the float type which are now strings (due to fillna in previous step) to integer
     for col in int_cols:
         data[col] = data[col].replace('[^0-9]','',regex=True).apply(lambda x: int(x) if x != '' else x)
-    # Round floats to necessary decimal places
-    if round_dict is not None:
-        data = data.round(round_dict)
+    
 
     # Time the API queries
     t1 = datetime.now()
@@ -121,9 +122,11 @@ if __name__ == "__main__":
                 'previous_account_number',
                 'owner_msisdn',
                 'next_of_kin_contact_number',
-                'customer_age',],
+                'customer_age',
+                'minimum_payment_amount',
+                ],
             slice_length = 500,
-            round_dict = {'hour_price':8},
+            round_dict = {'hour_price':8,'minimum_payment_amount':0},
             )
 
     # Agents import
