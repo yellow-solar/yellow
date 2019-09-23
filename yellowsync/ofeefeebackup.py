@@ -9,15 +9,45 @@ Tables include:
  - performance measures
 """
 
+# Standard libraries
+import io, os, json
+
+# Third party libraries
+import sqlalchemy as db
+
 # Local appication imports
 from yellowsync.API.yellowDB import yellowDBSync
 
 # List of tables to backup
-# Historics cashflows table - test if append works, and the table name is updated to ***_Backup
 TABLES_AND_FORM_LINKS = {
     'Historic_Cashflows_Report':'Add_Historic_Cashflow',
-    'Weekly_Commissions_Per_Agent':'Weekly_Commissions_Per_Agent',
+    'All_Agent_Payments':'Agent_Payments',
+    'All_Agent_Atms':'Agent_ATM',
+    # 'All_Agent_Savings':'Agent_Savings',
+    'Commission_Weekly_Earnings_per_Agent_Report':'Commission_Weekly_Earnings_per_Agent',
+    'Commissions_Per_Customer_Report':'Commissions_Per_Customer',
+    'Agent_Score_Report':'Agent_Score',
+    'Performance_Records_Report':'Performance_Records',
+    'Daily_Employee_Performance_per_Task1':'Daily_Employee_Performance_per_Task',
+    'Daily_Employee_Points1':'Daily_Employee_Points',
+    'Monthly_Employee_Performances_per_Task':'Monthly_Employee_Performance_per_Task',
+    'Monthly_Employee_Points2':'Monthly_Employee_Points',
+    'Monthly_Team_Performances_per_Task':'Monthly_Team_Performance_per_Task',
 }
+
+# Yellow DB
+# Access the config for DB
+os.environ['env'] = 'd'
+with open('config/config.json', 'r') as f:
+    db_cfg = json.load(f)[f"yellowdb{os.environ['env']}"]
+
+# Create engine for connections pool
+engine = db.create_engine(
+    f"{db_cfg['driver']}{db_cfg['user']}:{db_cfg['passwd']}@{db_cfg['host']}/Zoho", 
+    echo = True,
+    )
+# Creat a connection for executing the delete queries
+connection = engine.connect()
 
 """
 Loop through tables in dictionary and sync their tables/forms to the database 
@@ -34,13 +64,13 @@ for table in TABLES_AND_FORM_LINKS.keys():
         if_exists='append',
     )
 
+    #Clear out the data added to the backup tables from longer than 15 days
+    query = f"""
+    delete from {table}_Backup
+    where added_datetime < DATE_SUB(NOW(), INTERVAL 15 DAY)
+    """
+    delete_request = connection.execute(query)
 
-#TODO: clear out the data added to the backup tables from longer than 1 month, but keep the last value
-"""Can do it with a sql statement I think
-"""
-#sql
-f"""
-delete from {table}_Backup
-where added_time < current_time()-30days
-"""
+
+
 
