@@ -4,18 +4,20 @@
 #Zoho upload jobs
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Accounts_Data_Import          >> ../.log/zoho-sync.log 2>&1
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Agents_Data_Import            >> ../.log/zoho-sync.log 2>&1
+#30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Users_Data_Import            >> ../.log/zoho-sync.log 2>&1
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Credit_Details   >> ../.log/zoho-sync.log 2>&1
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Personal_Details >> ../.log/zoho-sync.log 2>&1
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Payments_Data_Import          >> ../.log/zoho-sync.log 2>&1
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Replaced_Units_Record         >> ../.log/zoho-sync.log 2>&1
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Stock_Data_Import             >> ../.log/zoho-sync.log 2>&1
 40 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Dolo_Scores                   >> ../.log/zoho-sync.log 2>&1
-# Agent recruitment zoho sync
-0 */2 * * * cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.recruitment        >> ../.log/recruitment.log 2>&1
 
-# Yellow jobs
-0 6,9,12,15,18 * * *    cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.periodsupdate                     >> ../.log/yellow-jobs.log 2>&1
-  
+# Payment profiles calc
+35 6,9,12,15,18 * * *    cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.periodsupdate                     >> ../.log/yellow-jobs.log 2>&1
+
+# Sheets sync
+0 */2 * * * cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.sheetsync        >> ../.log/sheetsync.log 2>&1
+
 # Airtel statement import
 */2 * * * * cd yellow && ~/.venv/data-jobs/bin/python -m statements.mobilestatements  >> ../.log/mobilestatements.log 2>&1
 

@@ -129,7 +129,7 @@ if __name__ == "__main__":
             round_dict = {'hour_price':8,'minimum_payment_amount':0},
             )
 
-    # Agents import
+    # Agents import - old
     elif form == "Agents_Data_Import":
         uploadForm(
             form="Agents_Data_Import",
@@ -140,6 +140,19 @@ if __name__ == "__main__":
                 'phone',],
             slice_length = 1000,
             row_filters={'role':['Administrator','Operator', 'Viewer']}
+            )
+
+    # Agents/user import - new
+    elif form == "Users_Data_Import":
+        uploadForm(
+            form="Agents_Data_Import",
+            file="users",
+            header_name="users",
+            int_cols = [
+                'limit_amount',
+                'phone',],
+            slice_length = 1000,
+            # row_filters={'role':['Administrator','Operator', 'Viewer']}
             )
 
     # Applications_Credit_Details

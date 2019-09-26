@@ -8,6 +8,7 @@ import os, json, base64, re
 
 # third party
 import pandas as pd
+from pandas.io.json import json_normalize
 from googleapiclient import discovery, errors
 from google.oauth2 import service_account
 from google.auth.transport.requests import Request
@@ -67,28 +68,31 @@ def processBatchDF(batch_result, sheets_config):
         form = re.sub(r'!.*', '', result['range'])
         config = sheets_config.get(form,{})
         # create df from values returned by google for the specific results
-        df = pd.DataFrame(result['values']) 
+        result_values = result['values']
+        df = pd.DataFrame(result_values[1:]) 
+        df.columns = result_values[0]
         # set columns to an first row, replacing spaces with underscores
         # and only alphanumeric characters
         # check if columns requested are in google sheet
-        df.columns = df.loc[0]
         if config.get('columns'):
-            sheet_cols = config.get('columns')
+            sheet_cols = config.get('columns',[])
             for col in sheet_cols:
-                if col not in df.loc[0].values:
+                if col not in df.columns.values:
                     raise Exception(f"{col} not in sheet columns")
             # if no error, filter the columns to sheet_cols
             df = df[sheet_cols]
         else:
-            sheet_cols = df.loc[0]
+            sheet_cols = df.columns.values
         # Replace whitespace and remove non-alphanumerics
         sheet_cols_alphanum = [re.sub(r'\W',' ',col).rstrip() for col in sheet_cols] 
         df.columns = [re.sub(r' +',' ',col).replace(' ','_') for col in sheet_cols_alphanum] 
         # drop empty column names, if any
         if '' in df.columns:
             df = df.drop('',axis=1)
-        # drop the first row - was column names
-        df = df.drop(0,axis=0)
+        # convert columns to numeric where possible,
+        # ignores columns that have some strings, leaving as object
+        # for col in df.columns:
+        #     df[col]= pd.to_numeric(df[col], errors='ignore')
         # convert input timestamp columns
         for col in config.get('timestamps',[]):
             if col in df.columns:
@@ -101,6 +105,7 @@ def processBatchDF(batch_result, sheets_config):
     
     #return the dictionary of dataframes
     return (df_dict) 
+    
 if __name__ == '__main__':
     # Initialise google sheets API
     gsheet = GSheet(CONFIG_FOLDER + '/' + FILENAME)

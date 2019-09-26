@@ -73,14 +73,14 @@ pay_date_cols = ['effective_utc','recorded_utc']
 # Import account and payments data
 accounts_per_month = pd.DataFrame()
 for f in os.listdir(data_path+'/'):
-    data = pd.read_csv(data_path+'/'+f)
-    print(f)
     if re.search("[0-9]{6}", f):
+        data = pd.read_csv(data_path+'/'+f)
         month_key = re.findall("[0-9]{6}", f)[0]
         account_data = pd.read_csv(data_path+'/'+f, parse_dates = acc_date_cols)
         account_data['account_timestamp'] = month_key+'01'
         accounts_per_month = accounts_per_month.append(account_data[account_columns+['account_timestamp']])
     elif re.search("payments.csv", f):
+        data = pd.read_csv(data_path+'/'+f)
         payments_data = pd.read_csv(data_path+'/'+f, parse_dates = pay_date_cols)[payment_columns]
         payments_data['reversal_amount'] = payments_data.amount*(~payments_data.reversal.isna()*1)
         payments_data['amount'] = payments_data.amount*(payments_data.reversal.isna()*1)

@@ -31,14 +31,17 @@ password = 'Yellow#32'
 # Configure urls for snapshots
 # requests.get(base_url+accounts, auth=HTTPBasicAuth(username, password))
 base_url = 'https://payg.angazadesign.com/api/snapshots'
-APIs = {'clients':'/clients',
-        'accounts':'/accounts',
-        'payments':'/payments',
-        'replacements':'/replacements',
-        'prospects':'/prospects',
-        'stock_unit_statuses':'/stock_unit_statuses',
-        'receipts':'/receipts',
-        'agents':'/agents'}
+APIs = {
+    'clients':'/clients',
+    'accounts':'/accounts',
+    'payments':'/payments',
+    'replacements':'/replacements',
+    'prospects':'/prospects',
+    'stock_unit_statuses':'/stock_unit_statuses',
+    'receipts':'/receipts',
+    'agents':'/agents',
+    # 'users':'/users',
+        }
 
 for APIname in APIs.keys():
     print('Requesting from: ' + APIname)

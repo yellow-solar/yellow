@@ -59,29 +59,40 @@ class ZohoAPI:
         payload =  {**self.RPCheader,**{"XMLString":xml}}
         r = requests.post(self.baseUrl + self.rpcUrl, data = payload)
         return(r)
-    
+
     # function to create the xml structure for the rpc
-    def createXml(self, form, data):
-        ### WARNING - NOT SURE OF MAX LENGTH YET
+    def createXml(self, form, data, update_id = None):
+        ### WARNING - MAX LENGTH OF AROUND 1million characters
         # Create a series of formatted xml strings of the data
-        xml_data = data.apply(self._pandas_xml_func, axis=1)
+        if update_id is None:
+            xml_data = data.apply(self._pandas_xml_add, axis=1)
+        else: 
+            xml_data = data.apply(self._pandas_xml_update_id, axis=1, update_id=update_id)
         #Join every row in the series to create one long xml
         xml_data = xml_data.str.cat(sep='')
         # Add to the xml base format 
         xml = self.rpcBaseXML.format('"'+self.application_name+'"','"'+form+'"', xml_data)        
         return(xml)
     
-    def _pandas_xml_func(self, row):
+    def _pandas_xml_add(self, row):
         data_xml = ['<add>']
         for field in row.index:
             if row[field]!='':
                 data_xml.append('<field name="{0}"><value>{1}</value></field>'.format(field, row[field]))
         data_xml.append('</add>')
-#         print("".join(data_xml))
         return("".join(data_xml))
         
 #     def view(self, )
-
+    def _pandas_xml_update_id(self, row, update_id):
+        data_xml = [f'<update>']
+        data_xml.append(f'<criteria>{update_id}=="{row[update_id]}"</criteria>')
+        data_xml.append('<newvalues>')
+        for field in row.index:
+            if row[field]!='' and field != update_id:
+                data_xml.append('<field name="{0}"><value>{1}</value></field>'.format(field, row[field]))
+        data_xml.append('</newvalues>')
+        data_xml.append('</update>')
+        return("".join(data_xml))
 
 # function to delete a form from zoho account
 def formDelete(form, zoho):
@@ -107,7 +118,7 @@ def formDelete(form, zoho):
 # the relationship depends on # columns, # columns with values etc.
 
 # The return value is a list, each value in the list is a JSON structured as {response:{status:<status_code>, text:<XMLresponse>}}
-def dfUploadSync(df, form, zoho, slice_length=500):
+def dfUploadSync(df, form, zoho, slice_length=500, update_id=None):
     """ Function to upload dataframe to zoho 
 
             df: pandas dataframe
@@ -118,11 +129,11 @@ def dfUploadSync(df, form, zoho, slice_length=500):
     responses = []
     response_count = 0
     
-    # Seems like 500 is the limit - do it in slices
+    # Slice dataframe for upload - depends on number of columns. Default 500
     for _, df_slice in df.groupby(np.arange(len(df)) // slice_length):
         print("Request number: " + str(response_count) + ", Records: " + str(len(df_slice)))
         # Create xml string from accounts data
-        xml_string = zoho.createXml(form, df_slice)
+        xml_string = zoho.createXml(form, df_slice, update_id)
 
         # Send query to Zoho
         rpc_request = zoho.rpcAdd(xml_string)
