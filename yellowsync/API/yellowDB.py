@@ -93,7 +93,7 @@ def yellowDBSync(table, schema, insert_cols=None,
 
     # Create engine for connections pool
     engine = db.create_engine(
-        f"{db_cfg['driver']}{db_cfg['user']}:{db_cfg['passwd']}@{db_cfg['host']}/{schema}", 
+        f"{db_cfg['driver']}{db_cfg['user']}:{db_cfg['passwd']}@{db_cfg['host']}/{schema}?charset=utf8mb4", 
         # , echo = True
         )
     
