@@ -34,6 +34,7 @@ class AngazaAPI:
         self.apiurl = 'https://payg.angazadesign.com/data'
 
     def pullSnapshot(self, tablename):
+        """ Download table from snapshot URL and correct for bad characters """
         snapshot = requests.get(
             f"{self.snapshoturl}/{tablename}", 
             auth=HTTPBasicAuth(self.user, self.pswrd))

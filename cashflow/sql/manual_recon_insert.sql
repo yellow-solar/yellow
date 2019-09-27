@@ -19,8 +19,25 @@ INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
 VALUES ('MP190820.1002.G04090','Trn reconciled fine, not sure why ID in payment note was not picked up', 'Newshirt')
 ; */
 
-INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+/* INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
 VALUES ('MP190823.1106.D62722','Trn made as down payment. Trn reconciled to test payment', 'Newshirt')
+; */
+
+/* INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+VALUES ('MP190730.1425.D02285','Unassigned that was not found and hence deleted', 'Newshirt')
+; */
+
+/* INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+VALUES ('MP190730.1113.D99304','Unassigned that was not found and hence deleted', 'Newshirt')
+; */
+
+/* INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+VALUES ('MP190924.1030.H01156','Unassigned that was not found and hence deleted', 'Newshirt')
 ;
+
+INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+VALUES ('MP190909.0640.H37623','Unassigned that was not found and hence deleted', 'Newshirt')
+; */
+
 
 

@@ -1,16 +1,30 @@
-import os
-import pandas as pd
-import numpy as np
+""" Pull data off Angaza and sync to Yellow DB and save csv to folder 
+
+    - needs update of password config for Angaza
+    - need to sync data to generic Yellow database for accounts etc.
+    - need to push to zoho from Yellow DB rather
+"""
+
+# Standard Libraries
+import os, json
 import re
-from pandas.tseries.offsets import MonthEnd
+import csv
 from datetime import timedelta
 from datetime import datetime
 import time
 import itertools
+from io import StringIO
+
+# Third party
+import pandas as pd
+import numpy as np
+from pandas.tseries.offsets import MonthEnd
 import sqlite3
 import requests
 from requests.auth import HTTPBasicAuth
-from io import StringIO
+
+# Local libraries
+from yellowsync.API.yellowDB import yellowDBSync
 
 # Dates and Timestamps
 today_ts = pd.to_datetime('today').round('1s')
@@ -24,8 +38,10 @@ print("Current Run:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 data_path = '../data'
 
 # Angaza user and password
-username = 'mike@pacafrica.co.za'
-password = 'Yellow#32'
+with open('config/config.json', 'r') as f:
+    angaza_admin = json.load(f)['angaza_admin']
+    username = angaza_admin['username']
+    password = angaza_admin['password']
 
 ### Snapshots
 # Configure urls for snapshots
@@ -54,7 +70,16 @@ for APIname in APIs.keys():
         # Replace bad Nones and characters before saving
         snapshot_df = snapshot_df.replace('None',np.NaN).replace('none',np.NaN).replace('NONE',np.NaN)
         snapshot_df = snapshot_df.replace("&","and",regex=True).replace("<","",regex=True).replace(">","",regex=True)
-        snapshot_df.to_csv(data_path+APIs[APIname]+'.csv', index=False)
+        snapshot_df.to_csv(data_path+APIs[APIname]+'.csv', index=False, quoting=csv.QUOTE_NONNUMERIC)
+
+        #sync to yellowDB
+        yellowDBSync(
+            table = APIname,
+            schema = 'Angaza',
+            index_label='angaza_id',
+            dl=False,
+            df=snapshot_df,
+            )
     else:
         raise ValueError("Request to " + APIname + " failed with error code: " + str(snapshot.status_code))
     if APIname == 'accounts':

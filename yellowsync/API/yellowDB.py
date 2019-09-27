@@ -21,13 +21,17 @@ from yellowsync.API.angazaAPI import AngazaAPI
 
 def yellowDBSync(table, schema, insert_cols=None, 
                 insert_cols_rename=None, index_label = None, 
-                form_link=None, if_exists='replace', df = None):
+                form_link=None, if_exists='replace', df = None, dl=True):
     """ Download or import and sync table in Yellow DB """
     # if there is a csv in the filename, import rather than fetch:
     if schema == 'Angaza':
         angaza = AngazaAPI()
-        print(f'Downloading {table}')
-        insert_df = angaza.pullSnapshot(tablename = table)
+        if dl:
+            print(f'Downloading {table}')
+            insert_df = angaza.pullSnapshot(tablename = table)
+        else:
+            print('Using provided data for sync to YellowDB')
+            insert_df = df
 
     elif schema == 'Mobile':
         insert_df = df
@@ -43,7 +47,7 @@ def yellowDBSync(table, schema, insert_cols=None,
             zoho_cfg = json.load(f)['zoho']
         zoho = ZohoAPI(zoho_cfg['zc_ownername'], zoho_cfg['authtoken'], zoho_cfg['app'])
 
-        # Get the records from the cashflow form
+        # Get the records from the Zoho form
         print(f"Downloading zoho table {table}...")
         form_view = zoho.get(table, payload={'raw':'true',}) # via the trigger table
         if form_view.status_code == 200:
@@ -77,6 +81,9 @@ def yellowDBSync(table, schema, insert_cols=None,
         insert_df = insert_df[insert_cols]
     if insert_cols_rename is not None:
         insert_df = insert_df.rename(columns=insert_cols_rename)
+
+    ## Shorten column length to 64 characters for MySQL
+    insert_df.columns = [x[0:64] if (len(x) > 64) else x for x in insert_df.columns ]
 
     ### Upload to database
     # Database config

@@ -43,6 +43,9 @@
     "angaza":{
         "username":"ben@yellowsolarpower.com",
         "password":"password"
+    },
+    "angaza_admin":{
+        "username":"mike@pacafrica.co.za",
+        "password":"Yellow#32"
     }
-    
 }

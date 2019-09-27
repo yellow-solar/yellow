@@ -1,5 +1,5 @@
 # Angaza jobs
-25 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python ~/yellow/yellowsync/angazapull.py                          >> ../.log/angaza-sync.log 2>&1
+25 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.angazapull.py                          >> ../.log/angaza-sync.log 2>&1
 
 #Zoho upload jobs
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Accounts_Data_Import          >> ../.log/zoho-sync.log 2>&1

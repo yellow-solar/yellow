@@ -3,6 +3,7 @@
     Program deletes the current records first
     Program uses an argument with the call 
 
+    - need to push to zoho from Yellow DB rather
 """
 
 # Standard library
@@ -100,7 +101,7 @@ def uploadSwitch(form):
 # upload_switch(form)
 
 if __name__ == "__main__":
-    """ 
+    """
     when Cron calls the zoho script, it must call with the form 
     name input 
     """
@@ -202,6 +203,7 @@ if __name__ == "__main__":
                 'old_unit_number',
                 ],
             slice_length = 2000,
+            # fresh_data=True,
             )
 
     # Stock_Data_Import
