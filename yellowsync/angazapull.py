@@ -73,13 +73,16 @@ for APIname in APIs.keys():
         snapshot_df.to_csv(data_path+APIs[APIname]+'.csv', index=False, quoting=csv.QUOTE_NONNUMERIC)
 
         #sync to yellowDB
-        yellowDBSync(
-            table = APIname,
-            schema = 'Angaza',
-            index_label='angaza_id',
-            dl=False,
-            df=snapshot_df,
-            )
+        try:
+            yellowDBSync(
+                table = APIname,
+                schema = 'Angaza',
+                index_label='angaza_id',
+                dl=False,
+                df=snapshot_df,
+                )
+        except:
+            print("Could not sync to DB")
     else:
         raise ValueError("Request to " + APIname + " failed with error code: " + str(snapshot.status_code))
     if APIname == 'accounts':
