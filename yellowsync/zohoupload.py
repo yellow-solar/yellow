@@ -75,8 +75,8 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     t1 = datetime.now()
 
     # Delete zoho data
-    # delete = formDelete(form, zoho)
-    delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
+    delete = zoho.delete(form, 'ID != null')
+    # delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
 
     # Run the synchronous XML upload with slide length
     if delete.status_code==200:
