@@ -81,6 +81,9 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     # Run the synchronous XML upload with slide length
     if delete.status_code==200:
         upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
+    # try if it times out as well, usually the data is there
+    elif delete.status_code==504:
+        upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
     else:
         raise ValueError(form + " delete request failed with status code:" + str(delete.status_code))
 

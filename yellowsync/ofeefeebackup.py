@@ -33,6 +33,7 @@ TABLES_AND_FORM_LINKS = {
     'Monthly_Employee_Performances_per_Task':'Monthly_Employee_Performance_per_Task',
     'Monthly_Employee_Points2':'Monthly_Employee_Points',
     'Monthly_Team_Performances_per_Task':'Monthly_Team_Performance_per_Task',
+    'Make_Adjustment_to_Customer_Price':'Make_Adjustment_to_Customer_Price_Report',
 }
 
 # Yellow DB
