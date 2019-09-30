@@ -73,13 +73,13 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     for col in int_cols:
         data[col] = data[col].replace('[^0-9]','',regex=True).apply(lambda x: int(x) if x != '' else x)
     
-
     # Time the API queries
     t1 = datetime.now()
 
     # Delete zoho data
+    print("Deleting angaza records...")
     if non_angaza_table:
-        delete = zoho.delete(form, 'ID != null && && organization != ""' )
+        delete = zoho.delete(form, 'ID != null && organization != ""' )
     else:    
         delete = zoho.delete(form, 'ID != null')
     # delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
@@ -92,6 +92,13 @@ def uploadForm(form, file, header_name=None, int_cols=[],
         upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
     else:
         raise ValueError(form + " delete request failed with status code:" + str(delete.status_code))
+
+    # Run the upload sync checker to look for new values
+    check = zoho.add("API_Triggers", payload = {"trigger_command":"execute","form":form,"command_string":"Upload_Sync_Checks"}) 
+    if check.status_code==200:
+        print("Upload sync checked")
+    else: 
+        print(check.text)
 
     t2 = datetime.now()
     print((t2-t1).total_seconds())
