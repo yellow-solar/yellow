@@ -23,7 +23,10 @@ from yellowsync.API.yellowDB import yellowDBSync
 
 def uploadForm(form, file, header_name=None, int_cols=[], 
                 slice_length=100, col_rename=None, row_filters={}, 
-                field_cutoff=[], round_dict=None, fresh_data=False):
+                non_angaza_table = False,
+                field_cutoff=[], 
+                round_dict=None, 
+                fresh_data=False):
     """ Upload an Angaza table to zoho given a form """
 
     # Fetch zoho cfg and setup API connection
@@ -75,7 +78,10 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     t1 = datetime.now()
 
     # Delete zoho data
-    delete = zoho.delete(form, 'ID != null')
+    if non_angaza_table:
+        delete = zoho.delete(form, 'ID != null && && organization != ""' )
+    else:    
+        delete = zoho.delete(form, 'ID != null')
     # delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
 
     # Run the synchronous XML upload with slide length
@@ -131,6 +137,7 @@ if __name__ == "__main__":
                 ],
             slice_length = 500,
             round_dict = {'hour_price':8,'minimum_payment_amount':0},
+            non_angaza_table=True,
             )
 
     # Agents import - old
@@ -206,6 +213,7 @@ if __name__ == "__main__":
                 'old_unit_number',
                 ],
             slice_length = 2000,
+            non_angaza_table=True,
             # fresh_data=True,
             )
 
