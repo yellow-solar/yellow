@@ -78,18 +78,33 @@ def uploadForm(form, file, header_name=None, int_cols=[],
 
     # Delete zoho data
     print("Deleting angaza records...")
-    if non_angaza_table:
-        delete = zoho.delete(form, 'ID != null && organization != ""' )
-    else:    
-        delete = zoho.delete(form, 'ID != null')
-    # delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
+    # if non_angaza_table:
+    #     delete = zoho.delete(form, 'ID != null && organization != ""' )
+    # else:    
+    #     delete = zoho.delete(form, 'ID != null')
+    delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
+
+    ###TODO: build in check by fetching records from table - if empty except for non-angaza then add, else error out
+    deleted_report = zoho.get(f'{form}_Report', payload={'raw':'true'})
+    report_json = json.loads(deleted_report.text)
+    
+    if ((non_angaza_table and len(report_json[form])>150) or
+         (not non_angaza_table and len(report_json[form])>0)):
+        raise Exception("Form not deleted in entirety")
 
     # Run the synchronous XML upload with slide length
     if delete.status_code==200:
         upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
+    # try the delete again if it failed with 502 error
+    # elif delete.status_code==502:
+    #     if non_angaza_table:
+    #         delete = zoho.delete(form, 'ID != null && organization != ""' )
+    #     else:    
+    #         delete = zoho.delete(form, 'ID != null')
+    #     upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
     # try if it times out as well, usually the data is there
-    elif delete.status_code==504:
-        upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
+    # elif delete.status_code==504:
+    #     upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
     else:
         raise ValueError(form + " delete request failed with status code:" + str(delete.status_code))
 
@@ -220,7 +235,7 @@ if __name__ == "__main__":
                 'old_unit_number',
                 ],
             slice_length = 2000,
-            non_angaza_table=True,
+            # non_angaza_table=True,
             # fresh_data=True,
             )
 

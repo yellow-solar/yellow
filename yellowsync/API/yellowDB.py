@@ -60,7 +60,6 @@ def yellowDBSync(table, schema, insert_cols=None,
                     form_json = json.loads(form_view.text) 
                 except:
                     raise
-      
         else:
             raise Exception (f"Request returned error code {form_view.status_code} in Zoho request for {table}")
 

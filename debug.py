@@ -10,7 +10,7 @@ import os,sys,json
 # import batch.yellowdbsync
 # import batch.batch_modules.angazaAPI
 
-import yellowsync.angazapull
+# import yellowsync.angazapull
 # from yellowsync.API.angazaAPI import AngazaAPI
 
 # import cashflow.cashflowrecon
@@ -25,6 +25,8 @@ import yellowsync.angazapull
 # import yellowsync.sheetsync
 
 # import yellowsync.periodsupdate
+
+import yellowsync.tests.zohodelete
 
 # yellowDBSync(
 #     table = "receipts",
