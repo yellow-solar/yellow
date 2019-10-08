@@ -22,7 +22,7 @@ from tools.exporters import exportCSV
 pd.options.display.float_format = '{:,.2f}'.format
 USER = 'system@yellow.africa'
 REPORT_TO = 'tech-support@yellow.africa'
-# REPORT_TO = 'ben@yellow.africa'
+PAYMENTS_EMAIL = 'payments@yellow.africa'
 
 RECON_EMAIL_COLS = ['TrnDate', 
     'MatchedPmt', 
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     # Create multimessage to send
     trn_recon_msg = gmail.create_message(
         sender = USER,
-        to = REPORT_TO,
+        to = ", ".join([REPORT_TO,PAYMENTS_EMAIL]),
         subject = 'Cashflow: Mobile Money Recon',
         message_text = 'Please open as HTML email',
         html=html,
