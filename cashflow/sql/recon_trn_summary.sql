@@ -78,7 +78,12 @@ left join max_seq m
 	on m.trn_date = d.TrnDate
     and m.max_id_seq_no = m.id_seq_no
 
-left join std_bank_airtel_sweeps std
+left join (
+	select Trn_Date
+		, sum(Amount) Amount_in_MK
+	from std_bank_airtel_sweeps 
+	group by 1
+	) std
 	on std.Trn_Date = d.TrnDate
 
 left join (
@@ -105,7 +110,7 @@ select rp.*
 	, case when DupPmts > 0  then 'USERS HAVE CREATED DUPLICATE PAYMENTS' else '' end HasDuplicate
 	-- place other summary columns here
 from report rp
-where rp.TrnDate < curdate()
+where rp.TrnDate <= curdate()
 order by rp.TrnDate desc
 ;
 
