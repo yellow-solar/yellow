@@ -195,7 +195,7 @@ if __name__ == "__main__":
             file="prospects",
             header_name="applications_credit_details",
             int_cols = [
-                'total_annual_income_from_other_sources_not_listed_above_in_mwk',],
+                'total_annual_income_from_other_sources_not_listed_above_in_mwk','registered_account_number'],
             slice_length = 350,
             )
         
