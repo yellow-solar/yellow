@@ -14,8 +14,8 @@ from
 		,	Account_Paid_Into 
         ,	Trn_Date
 		, 	case 	
-				when h.Account_Paid_From = 'Yellow Standard Bank Account' then -h.Amount_in_MK
-				when h.Account_Paid_Into = 'Yellow Standard Bank Account' then h.Amount_in_MK
+				when h.Account_Paid_From = 'Yellow Standard Bank Account' then -h.Amount
+				when h.Account_Paid_Into = 'Yellow Standard Bank Account' then h.Amount
 				else 0 
 			end Amount_MWK
 		, 	Cashflow_Category

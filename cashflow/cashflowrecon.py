@@ -95,7 +95,12 @@ if __name__ == "__main__":
         with open("cashflow/sql/standard_bank_account_trns.sql", 'r') as sql:
             query = sql.read().replace('%','%%')
             resultProxy = conn.execute(query)
-        print(resultProxy)
+    
+        # update the views
+        print("Summary query...")
+        with open("cashflow/sql/all_accounts_balance_daily.sql", 'r') as sql:
+            query = sql.read().replace('%','%%')
+            resultProxy = conn.execute(query) 
 
         # pull missing statements 
         print("Statement check...")
