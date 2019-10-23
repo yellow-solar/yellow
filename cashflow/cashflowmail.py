@@ -132,7 +132,7 @@ html_14day = htmlTxtandTable(
     balance_14day, 
     style='blueTable')
 html_actual_60day = htmlTxtandTable(
-    "Comparison of the days where actual balances are available (past 60 days)", 
+    "Comparison of the days where actual balances are available (past 30 days)", 
     balance_compare_actuals_60day, 
     style='blueTable')
 
