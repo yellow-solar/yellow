@@ -30,25 +30,25 @@ GSHEETS = {
     # Recruitment tests ID
     '1l0rxY-SR0e9vW8n4Ox4-EwRC-H3JvdoAL6fDb3Z86FY':{
         'Agent_Recruitment_Test1':{
-        'report':'Agent_Recruitment_Test1_Report',
-        'timestamps': ['Timestamp'],
-        'index_col':'Timestamp',
-        'update':False,
+            'report':'Agent_Recruitment_Test1_Report',
+            'timestamps': ['Timestamp'],
+            'index_col':'Timestamp',
+            'update':False,
+            },
+        'Agent_Recruitment_Test2':{
+            'report':'Agent_Recruitment_Test2_Report',
+            'columns': ['Timestamp','Score','Input your 4-digit Yellow Agent ID'],
+            'timestamps': ['Timestamp'],
+            'index_col':'Timestamp',
+            'update':False,
+            },
+        'Agent_Recruitment_Test3':{
+            'report':'Agent_Recruitment_Test3_Report',
+            'timestamps': ['Timestamp'],
+            'index_col':'Timestamp',
+            'update':False,
+            },
         },
-    'Agent_Recruitment_Test2':{
-        'report':'Agent_Recruitment_Test2_Report',
-        'columns': ['Timestamp','Score','Input your 4-digit Yellow Agent ID'],
-        'timestamps': ['Timestamp'],
-        'index_col':'Timestamp',
-        'update':False,
-        },
-    'Agent_Recruitment_Test3':{
-        'report':'Agent_Recruitment_Test3_Report',
-        'timestamps': ['Timestamp'],
-        'index_col':'Timestamp',
-        'update':False,
-        },
-    },
     # Agent test scores - 
     '1UuuMq00xo0WWGGXdOtaqq-TPaVjn0l6YLrv4h5U6nq4':{
         'Agent_Learning_Management_Test_Scores':{
@@ -96,7 +96,7 @@ for sheetID in GSHEETS.keys():
         report = SHEETS_CONFIG[form]['report']
         index_col = SHEETS_CONFIG[form]['index_col']
         timestamp_cols = SHEETS_CONFIG[form].get('timestamps',[])
-        update = SHEETS_CONFIG.get('update',False)
+        update = SHEETS_CONFIG[form].get('update',False)
         # set dataframe from dict returned from google api
         # also filter out keyword characters in Zoho
         google_df = (df_dict[form]
