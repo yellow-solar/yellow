@@ -163,28 +163,30 @@ if __name__ == "__main__":
             )
 
     # Agents import - old
-    elif form == "Agents_Data_Import":
-        uploadForm(
-            form="Agents_Data_Import",
-            file="agents",
-            header_name="agents",
-            int_cols = [
-                'limit_amount',
-                'phone',],
-            slice_length = 1000,
-            row_filters={'role':['Administrator','Operator', 'Viewer']}
-            )
+    # elif form == "Agents_Data_Import":
+    #     uploadForm(
+    #         form="Agents_Data_Import",
+    #         file="agents",
+    #         header_name="agents",
+    #         int_cols = [
+    #             'limit_amount',
+    #             'phone',],
+    #         slice_length = 1000,
+    #         row_filters={'role':['Administrator','Operator', 'Viewer']}
+    #         )
 
     # Agents/user import - new
     elif form == "Users_Data_Import":
         uploadForm(
-            form="Agents_Data_Import",
+            form="Users_Data_Import",
             file="users",
             header_name="users",
             int_cols = [
                 'limit_amount',
-                'phone',],
+                'primary_phone',
+                ],
             slice_length = 1000,
+            fresh_data=True,
             # row_filters={'role':['Administrator','Operator', 'Viewer']}
             )
 
