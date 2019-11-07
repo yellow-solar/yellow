@@ -156,6 +156,7 @@ if __name__ == "__main__":
                 'next_of_kin_contact_number',
                 'customer_age',
                 'minimum_payment_amount',
+                'neighbour_or_nearby_resident_contact_number',
                 ],
             slice_length = 500,
             round_dict = {'hour_price':8,'minimum_payment_amount':0},
