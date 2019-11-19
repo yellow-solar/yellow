@@ -22,8 +22,6 @@ from yellowsync.API.yellowDB import yellowDBSync
 TABLES_AND_FORM_LINKS = {
     'Historic_Cashflows_Report':'Add_Historic_Cashflow',
     'All_Agent_Payments':'Agent_Payments',
-    'All_Agent_Atms':'Agent_ATM',
-    # 'All_Agent_Savings':'Agent_Savings',
     'Commission_Weekly_Earnings_per_Agent_Report':'Commission_Weekly_Earnings_per_Agent',
     'Commissions_Per_Customer_Report':'Commissions_Per_Customer',
     'Agent_Score_Report':'Agent_Score',
@@ -33,7 +31,11 @@ TABLES_AND_FORM_LINKS = {
     'Monthly_Employee_Performances_per_Task':'Monthly_Employee_Performance_per_Task',
     'Monthly_Employee_Points2':'Monthly_Employee_Points',
     'Monthly_Team_Performances_per_Task':'Monthly_Team_Performance_per_Task',
-    'Make_Adjustment_to_Customer_Price':'Make_Adjustment_to_Customer_Price_Report',
+    'Commissions_Transactions_Report':'Commissions_Transactions',
+    'FS_Account_Transactions_Report':'FS_Account_Transactions',
+    'FS_Accounts_Report':'FS_Accounts',
+    'Payslip_Report':'Payslip',
+    'All_Agents':'Add_Agent',
 }
 
 # Yellow DB
@@ -56,14 +58,24 @@ Loop through tables in dictionary and sync their tables/forms to the database
  - append tables if they already exist
 """
 for table in TABLES_AND_FORM_LINKS.keys():
-    yellowDBSync(
-        table = table,
-        schema = 'Zoho',
-        # form link for table in zoho - if no link provided use table name as form link
-        form_link = TABLES_AND_FORM_LINKS.get(table,table),
-        # insert_cols_rename = {'ID':'zoho_ID','COMMENTS':'Comments', 'Date1':'Trn_Date'},
-        if_exists='append',
-    )
+    try:
+        yellowDBSync(
+            table = table,
+            schema = 'Zoho',
+            # form link for table in zoho - if no link provided use table name as form link
+            form_link = TABLES_AND_FORM_LINKS.get(table,table),
+            # insert_cols_rename = {'ID':'zoho_ID','COMMENTS':'Comments', 'Date1':'Trn_Date'},
+            if_exists='append',
+        )
+    except:
+        print("Failed to append, deleteing and re-creating")
+        yellowDBSync(
+            table = table,
+            schema = 'Zoho',
+            # form link for table in zoho - if no link provided use table name as form link
+            form_link = TABLES_AND_FORM_LINKS.get(table,table),
+            # insert_cols_rename = {'ID':'zoho_ID','COMMENTS':'Comments', 'Date1':'Trn_Date'},
+        )
 
     #Clear out the data added to the backup tables from longer than 15 days
     query = f"""
