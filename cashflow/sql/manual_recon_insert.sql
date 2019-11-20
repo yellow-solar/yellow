@@ -47,6 +47,9 @@ VALUES ('MP190927.2010.D17333','Wrong manual ID put in Angaza', 'Newshirt')
 VALUES ('MP190927.1359.G08904','Down payment', 'Newshirt')
 ; */
 
+-- INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+-- VALUES ('RO191118.1800.H01610','Rollback transaction', 'Newshirt')
+-- ;
 
 
 
