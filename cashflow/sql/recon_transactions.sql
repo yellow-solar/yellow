@@ -41,7 +41,7 @@ from
 		and p.reversal is null
 	where m.trn_type = 'MR'
 		and m.trn_status not like 'Transaction F%'
-		and m.trn_ref_number not like 'RO%'	
+		and m.trn_ref_number not like 'R%'	
         
 	union all
 
