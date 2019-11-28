@@ -154,7 +154,6 @@ if __name__ == "__main__":
                 'previous_account_number',
                 'owner_msisdn',
                 'next_of_kin_contact_number',
-                'customer_age',
                 'minimum_payment_amount',
                 'neighbour_or_nearby_resident_contact_number',
                 ],
