@@ -55,8 +55,8 @@ APIs = {
     'prospects':'/prospects',
     'stock_unit_statuses':'/stock_unit_statuses',
     'receipts':'/receipts',
-    'agents':'/agents',
-    # 'users':'/users',
+    # 'agents':'/agents',
+    'users':'/users',
         }
 
 for APIname in APIs.keys():
