@@ -55,7 +55,6 @@ APIs = {
     'prospects':'/prospects',
     'stock_unit_statuses':'/stock_unit_statuses',
     'receipts':'/receipts',
-    # 'agents':'/agents',
     'users':'/users',
         }
 
