@@ -10,6 +10,7 @@
 # system
 import os, json
 from io import StringIO
+import csv
 
 # third party
 import requests
@@ -55,6 +56,20 @@ class AngazaAPI:
                 "Request to " + tablename 
                 + " failed with error code: " + str(snapshot.status_code)
                 )
+
+    def pullSnapshotCSVonly(self, tablename):
+        """ Download table from snapshot URL and correct for bad characters """
+        snapshot = requests.get(
+            f"{self.snapshoturl}/{tablename}", 
+            auth=HTTPBasicAuth(self.user, self.pswrd))
+        if snapshot.status_code == 200:
+            return(StringIO(snapshot.content.decode('utf-8')))
+        else:
+            raise ValueError(
+                "Request to " + tablename 
+                + " failed with error code: " + str(snapshot.status_code)
+                )
+
 
 # Test
 # angaza = AngazaAPI()
