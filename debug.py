@@ -20,7 +20,15 @@ import os,sys,json
 # from yellowsync.API.angazaAPI import AngazaAPI
 
 # import cashflow.cashflowrecon
-import cashflow.cashflowmail
+# import cashflow.cashflowmail
+from yellowsync.API.yellowDB import yellowDB1
+from yellowsync.API.angazaAPI import AngazaAPI
+
+ydb = yellowDB1("Angaza")
+angaza = AngazaAPI()
+accountsCSV = angaza.pullSnapshotCSVonly("accounts")
+
+ydb.CSVtoDB(accountsCSV)
 
 # import googleapi.gmail
 # import googleapi.sheets

@@ -92,7 +92,7 @@ def uploadForm(form, file, header_name=None, int_cols=[],
          (not non_angaza_table and len(report_json[form])>0)):
         raise Exception("Form not deleted in entirety")
 
-    # Run the synchronous XML upload with slide length
+    # Run the synchronous XML upload with pre defined slice length
     if delete.status_code==200:
         upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
     # try the delete again if it failed with 502 error
@@ -162,19 +162,26 @@ if __name__ == "__main__":
             non_angaza_table=True,
             )
 
-    # Agents import - old
-    # elif form == "Agents_Data_Import":
-    #     uploadForm(
-    #         form="Agents_Data_Import",
-    #         file="agents",
-    #         header_name="agents",
-    #         int_cols = [
-    #             'limit_amount',
-    #             'phone',],
-    #         slice_length = 1000,
-    #         row_filters={'role':['Administrator','Operator', 'Viewer']}
-    #         )
-
+    # Accounts import V2
+    if form == "Accounts_Data_Import_V2":
+        uploadForm(
+            form="Accounts_Data_Import_V2",
+            file="accounts",
+            header_name="accounts",
+            col_rename={'date_of_write-off':'date_of_write_off'},
+            int_cols = [
+                'account_number',
+                'previous_account_number',
+                'owner_msisdn',
+                'next_of_kin_contact_number',
+                'minimum_payment_amount',
+                'neighbour_or_nearby_resident_contact_number',
+                ],
+            slice_length = 500,
+            round_dict = {'hour_price':8,'minimum_payment_amount':0},
+            non_angaza_table=True,
+            )
+            
     # Agents/user import - new
     elif form == "Users_Data_Import":
         uploadForm(

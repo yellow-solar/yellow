@@ -29,11 +29,11 @@
         "authtoken":"bdbda4796c376c1fb955a749d47a17e7",
         "app":"collections-management"
     },
-    "aws":{
+    "zohosync":{
         "scope":"creatorapi",
         "zc_ownername":"yellow679",
-        "authtoken":"bdbda4796c376c1fb955a749d47a17e7",
-        "application_name":"collections-management"
+        "authtoken":"",
+        "app":""
     },
     "airtel":{
         "url":"https://41.78.57.230:9200/AirtelMoney/",

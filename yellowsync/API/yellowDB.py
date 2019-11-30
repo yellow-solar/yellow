@@ -14,10 +14,34 @@ from datetime import datetime
 from pandas.io.json import json_normalize
 import sqlalchemy as db
 import pandas as pd
+import csv
 
 # Local application imports
 from yellowsync.API.zohoAPI import ZohoAPI
 from yellowsync.API.angazaAPI import AngazaAPI
+
+
+class yellowDB1:
+    """ Class that creates the objects for the Yellow DB engine
+    """
+    def __init__(self, schema):
+        # Database config
+        # Access the config for DB
+        with open('config/config.json', 'r') as f:
+            db_cfg = json.load(f)[f"yellowdb{os.environ['env']}"]
+
+        # Create engine for connections pool
+        self.engine = db.create_engine(
+            f"{db_cfg['driver']}{db_cfg['user']}:{db_cfg['passwd']}@{db_cfg['host']}/{schema}?charset=utf8mb4", 
+            # , echo = True
+            )
+
+    def CSVtoDB(self, csv):
+        print(csv)
+        header = csv[0].split(',')
+        print(header)
+        for line in csv[1:]:
+            print(line)
 
 def yellowDBSync(table, schema, insert_cols=None, 
                 insert_cols_rename=None, index_label = None, 
