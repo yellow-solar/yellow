@@ -142,6 +142,7 @@ if __name__ == "__main__":
     else:
         raise Exception("Expecting form as argument to call upload")
 
+    print(form)
     # Accounts import
     if form == "Accounts_Data_Import":
         uploadForm(
@@ -163,24 +164,24 @@ if __name__ == "__main__":
             )
 
     # Accounts import V2
-    if form == "Accounts_Data_Import_V2":
-        uploadForm(
-            form="Accounts_Data_Import_V2",
-            file="accounts",
-            header_name="accounts",
-            col_rename={'date_of_write-off':'date_of_write_off'},
-            int_cols = [
-                'account_number',
-                'previous_account_number',
-                'owner_msisdn',
-                'next_of_kin_contact_number',
-                'minimum_payment_amount',
-                'neighbour_or_nearby_resident_contact_number',
-                ],
-            slice_length = 500,
-            round_dict = {'hour_price':8,'minimum_payment_amount':0},
-            non_angaza_table=True,
-            )
+    # if form == "Accounts_Data_Import_V2":
+    #     uploadForm(
+    #         form="Accounts_Data_Import_V2",
+    #         file="accounts",
+    #         header_name="accounts",
+    #         col_rename={'date_of_write-off':'date_of_write_off'},
+    #         int_cols = [
+    #             'account_number',
+    #             'previous_account_number',
+    #             'owner_msisdn',
+    #             'next_of_kin_contact_number',
+    #             'minimum_payment_amount',
+    #             'neighbour_or_nearby_resident_contact_number',
+    #             ],
+    #         slice_length = 500,
+    #         round_dict = {'hour_price':8,'minimum_payment_amount':0},
+    #         non_angaza_table=True,
+    #         )
             
     # Agents/user import - new
     elif form == "Users_Data_Import":
