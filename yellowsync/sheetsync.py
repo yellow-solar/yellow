@@ -37,7 +37,7 @@ GSHEETS = {
             },
         'Agent_Recruitment_Test2':{
             'report':'Agent_Recruitment_Test2_Report',
-            'columns': ['Timestamp','Score','Input your 4-digit Yellow Agent ID'],
+            'columns': ['Timestamp','Score','Input your Yellow Agent ID'],
             'timestamps': ['Timestamp'],
             'index_col':'Timestamp',
             'update':False,
