@@ -3,12 +3,12 @@
 
 #Zoho upload jobs
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Accounts_Data_Import          >> ../.log/zoho-sync.log 2>&1
-30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Users_Data_Import             >> ../.log/zoho-sync.log 2>&1
-30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Credit_Details   >> ../.log/zoho-sync.log 2>&1
-30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Personal_Details >> ../.log/zoho-sync.log 2>&1
-30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Payments_Data_Import          >> ../.log/zoho-sync.log 2>&1
+29 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Users_Data_Import             >> ../.log/zoho-sync.log 2>&1
+34 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Credit_Details   >> ../.log/zoho-sync.log 2>&1
+32 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Personal_Details >> ../.log/zoho-sync.log 2>&1
+29 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Payments_Data_Import          >> ../.log/zoho-sync.log 2>&1
 30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Replaced_Units_Record         >> ../.log/zoho-sync.log 2>&1
-30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Stock_Data_Import             >> ../.log/zoho-sync.log 2>&1
+31 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Stock_Data_Import             >> ../.log/zoho-sync.log 2>&1
 
 # 1am jobs
 55 0 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.angazapull                          >> ../.log/angaza-sync.log 2>&1
@@ -16,11 +16,11 @@
 #Zoho upload jobs
 0 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Accounts_Data_Import          >> ../.log/zoho-sync.log 2>&1
 0 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Users_Data_Import             >> ../.log/zoho-sync.log 2>&1
-0 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Credit_Details   >> ../.log/zoho-sync.log 2>&1
-0 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Personal_Details >> ../.log/zoho-sync.log 2>&1
-0 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Payments_Data_Import          >> ../.log/zoho-sync.log 2>&1
+3 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Credit_Details   >> ../.log/zoho-sync.log 2>&1
+5 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Applications_Personal_Details >> ../.log/zoho-sync.log 2>&1
+1 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Payments_Data_Import          >> ../.log/zoho-sync.log 2>&1
 0 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Replaced_Units_Record         >> ../.log/zoho-sync.log 2>&1
-0 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Stock_Data_Import             >> ../.log/zoho-sync.log 2>&1
+10 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Stock_Data_Import             >> ../.log/zoho-sync.log 2>&1
 
 # Payment profiles calc
 35 6,9,12,15,18 * * *    cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.periodsupdate               >> ../.log/yellow-jobs.log 2>&1
