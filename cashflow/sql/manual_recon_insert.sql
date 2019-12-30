@@ -55,5 +55,8 @@ VALUES ('MP190927.1359.G08904','Down payment', 'Newshirt')
 -- VALUES ('MP191120.1407.D10654','Test payment for phone that is now a test account', 'Newshirt')
 -- ;
 
+-- INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+-- VALUES ('MP191215.1731.D29206','Idi reversed transaction - need to be removed from the list', 'Newshirt')
+-- ;
 
 

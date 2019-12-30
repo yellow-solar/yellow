@@ -156,7 +156,7 @@ for sheetID in GSHEETS.keys():
                 print("Updating new records...")
                 upload = dfUploadSync(df = update_df, form=form, zoho=zoho, update_id=index_col)
             elif not update:
-                print("Config set to not update")
+                print("No new rows to insert, config set to not update changes")
     # TODO: Place these tables into Yellow db table
     # ISSUE: zoho names are too long for mysql, need to filter down
     # yellowDBSync(

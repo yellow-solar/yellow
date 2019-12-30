@@ -43,7 +43,7 @@ def uploadForm(form, file, header_name=None, int_cols=[],
         angaza = AngazaAPI()
         data = angaza.pullSnapshot(tablename = file)
     else:
-        data = pd.read_csv(f'../data/{file}.csv')
+        data = pd.read_csv(f'../data/{file}.csv', low_memory=False)
     
     # Fill NA with blank string and correct strings 
     # (NB Blank strings do not send to Zoho to increaser performance)
