@@ -1,1 +1,1 @@
-﻿organization,angaza_id,created_utc,first_name,last_name,username,email,primary_phone,role,assigned_pricing_groups,balance_mwk,archived,limit_amount,stock,last_updated_utc,last_remit_amount,last_remit_currency,user_photo
+﻿organization,user_external_id,created_utc,first_name,last_name,username,user_email,user_phone_number,user_role,assigned_pricing_groups,archived,stock,user_photo

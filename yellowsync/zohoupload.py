@@ -66,7 +66,7 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     # Filter rows
     for col in row_filters.keys():
         data = data[~data[col].isin(row_filters[col])]
-    #shorten length of payment notes
+    #shorten length of certain fields
     for col in field_cutoff:
         data[col] = data[col].apply(lambda x: x[0:250] if len(x) > 250 else x)
     # Convert the float type which are now strings (due to fillna in previous step) to integer
@@ -84,7 +84,7 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     #     delete = zoho.delete(form, 'ID != null')
     delete = zoho.add("API_Triggers", payload = {"trigger_command":"delete","form":form}) # via the trigger table
 
-    ###TODO: build in check by fetching records from table - if empty except for non-angaza then add, else error out
+    # Check by fetching records from table - if empty except for non-angaza then add, else error out
     deleted_report = zoho.get(f'{form}_Report', payload={'raw':'true'})
     report_json = json.loads(deleted_report.text)
     
@@ -95,16 +95,7 @@ def uploadForm(form, file, header_name=None, int_cols=[],
     # Run the synchronous XML upload with pre defined slice length
     if delete.status_code==200:
         upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
-    # try the delete again if it failed with 502 error
-    # elif delete.status_code==502:
-    #     if non_angaza_table:
-    #         delete = zoho.delete(form, 'ID != null && organization != ""' )
-    #     else:    
-    #         delete = zoho.delete(form, 'ID != null')
-    #     upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
-    # try if it times out as well, usually the data is there
-    # elif delete.status_code==504:
-    #     upload = dfUploadSync(df = data, form=form, zoho=zoho, slice_length=slice_length)
+        print(upload)
     else:
         raise ValueError(form + " delete request failed with status code:" + str(delete.status_code))
 
