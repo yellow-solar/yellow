@@ -156,7 +156,7 @@ def dfUploadSync(df, form, zoho, slice_length=500, update_id=None):
 
         else:
             print("Error: " + str(rpc_request.status_code) + " - see rpc request text for more detail")
-            print(rpc_request.text)
+            print(rpc_request.text[0:255])
             raise ValueError("Request number " + str(response_count) + " failed")
         
         # Wait 5 seconds after each request to give it time to update in Zoho - UNKNOWN IF NEEDED
