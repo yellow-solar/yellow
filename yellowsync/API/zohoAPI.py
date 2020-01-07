@@ -151,12 +151,13 @@ def dfUploadSync(df, form, zoho, slice_length=500, update_id=None):
                     if status.text != 'Success':
                         print("WARNING: " + status.text)
             else:
-                print(rpc_request.text)
+                i = rpc_request.text.find("errorlist")
+                print(rpc_request.text[(i-50):i(+200)])
                 raise Exception("Received errorlist in rpc response from Zoho")
 
         else:
             print("Error: " + str(rpc_request.status_code) + " - see rpc request text for more detail")
-            print(rpc_request.text[0:255])
+            print(rpc_request.text)
             raise ValueError("Request number " + str(response_count) + " failed")
         
         # Wait 5 seconds after each request to give it time to update in Zoho - UNKNOWN IF NEEDED
