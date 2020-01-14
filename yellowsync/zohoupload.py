@@ -147,6 +147,7 @@ if __name__ == "__main__":
                 'next_of_kin_contact_number',
                 'minimum_payment_amount',
                 'neighbour_or_nearby_resident_contact_number',
+                'unlock_price',
                 ],
             slice_length = 500,
             round_dict = {'hour_price':8,'minimum_payment_amount':0},
@@ -188,26 +189,26 @@ if __name__ == "__main__":
             # row_filters={'role':['Administrator','Operator', 'Viewer']}
             )
 
-    # Applications_Credit_Details
-    elif form == "Applications_Credit_Details":
-        uploadForm(
-            form="Applications_Credit_Details",
-            file="prospects",
-            header_name="applications_credit_details",
-            int_cols = [
-                'total_annual_income_from_other_sources_not_listed_above_in_mwk','registered_account_number'],
-            slice_length = 350,
-            )
+    # # Applications_Credit_Details
+    # elif form == "Applications_Credit_Details":
+    #     uploadForm(
+    #         form="Applications_Credit_Details",
+    #         file="prospects",
+    #         header_name="applications_credit_details",
+    #         int_cols = [
+    #             'total_annual_income_from_other_sources_not_listed_above_in_mwk','registered_account_number'],
+    #         slice_length = 350,
+    #         )
         
-    # Applications_Personal_Details
-    elif form == "Applications_Personal_Details":
-        uploadForm(
-            form="Applications_Personal_Details",
-            file="prospects",
-            header_name="applications_personal_details",
-            int_cols = ['phone',],
-            slice_length = 1000,
-            )
+    # # Applications_Personal_Details
+    # elif form == "Applications_Personal_Details":
+    #     uploadForm(
+    #         form="Applications_Personal_Details",
+    #         file="prospects",
+    #         header_name="applications_personal_details",
+    #         int_cols = ['phone',],
+    #         slice_length = 1000,
+    #         )
 
     # Payments
     elif form == "Payments_Data_Import":
