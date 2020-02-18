@@ -28,27 +28,27 @@ from googleapi.sheets import GSheet, processBatchDF
 # CONFIGURATION OF TESTS REQUIRED TO POPULATE ZOHO
 GSHEETS = {
     # Recruitment tests ID
-    '1l0rxY-SR0e9vW8n4Ox4-EwRC-H3JvdoAL6fDb3Z86FY':{
-        'Agent_Recruitment_Test1':{
-            'report':'Agent_Recruitment_Test1_Report',
-            'timestamps': ['Timestamp'],
-            'index_col':'Timestamp',
-            'update':False,
-            },
-        'Agent_Recruitment_Test2':{
-            'report':'Agent_Recruitment_Test2_Report',
-            'columns': ['Timestamp','Score','Input your Yellow Agent ID'],
-            'timestamps': ['Timestamp'],
-            'index_col':'Timestamp',
-            'update':False,
-            },
-        'Agent_Recruitment_Test3':{
-            'report':'Agent_Recruitment_Test3_Report',
-            'timestamps': ['Timestamp'],
-            'index_col':'Timestamp',
-            'update':False,
-            },
-        },
+    # '1l0rxY-SR0e9vW8n4Ox4-EwRC-H3JvdoAL6fDb3Z86FY':{
+    #     'Agent_Recruitment_Test1':{
+    #         'report':'Agent_Recruitment_Test1_Report',
+    #         'timestamps': ['Timestamp'],
+    #         'index_col':'Timestamp',
+    #         'update':False,
+    #         },
+    #     'Agent_Recruitment_Test2':{
+    #         'report':'Agent_Recruitment_Test2_Report',
+    #         'columns': ['Timestamp','Score','Input your Yellow Agent ID'],
+    #         'timestamps': ['Timestamp'],
+    #         'index_col':'Timestamp',
+    #         'update':False,
+    #         },
+    #     'Agent_Recruitment_Test3':{
+    #         'report':'Agent_Recruitment_Test3_Report',
+    #         'timestamps': ['Timestamp'],
+    #         'index_col':'Timestamp',
+    #         'update':False,
+    #         },
+    #     },
     # Agent test scores - 
     '1UuuMq00xo0WWGGXdOtaqq-TPaVjn0l6YLrv4h5U6nq4':{
         'Agent_Learning_Management_Test_Scores':{
