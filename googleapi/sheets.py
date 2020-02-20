@@ -70,7 +70,7 @@ def processBatchDF(batch_result, sheets_config):
         # create df from values returned by google for the specific results
         result_values = result['values']
         df = pd.DataFrame(result_values[1:]) 
-        df.columns = result_values[0]
+        df.columns = result_values[0][0:len(df.columns)]
         # set columns to an first row, replacing spaces with underscores
         # and only alphanumeric characters
         # check if columns requested are in google sheet

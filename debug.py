@@ -39,7 +39,7 @@ import os,sys,json
 
 # import yellowsync.ofeefeebackup
 
-# import yellowsync.sheetsync
+import yellowsync.sheetsync
 
 # import yellowsync.periodsupdate
 
