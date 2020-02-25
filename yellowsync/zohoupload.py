@@ -175,19 +175,19 @@ if __name__ == "__main__":
     #         )
             
     # Agents/user import - new
-    elif form == "Users_Data_Import":
-        uploadForm(
-            form="Users_Data_Import",
-            file="users",
-            header_name="users",
-            int_cols = [
-                'limit_amount',
-                'primary_phone',
-                ],
-            slice_length = 1000,
-            fresh_data=True,
-            # row_filters={'role':['Administrator','Operator', 'Viewer']}
-            )
+    # elif form == "Users_Data_Import":
+    #     uploadForm(
+    #         form="Users_Data_Import",
+    #         file="users",
+    #         header_name="users",
+    #         int_cols = [
+    #             'limit_amount',
+    #             'primary_phone',
+    #             ],
+    #         slice_length = 1000,
+    #         fresh_data=True,
+    #         # row_filters={'role':['Administrator','Operator', 'Viewer']}
+    #         )
 
     # # Applications_Credit_Details
     # elif form == "Applications_Credit_Details":
@@ -211,18 +211,18 @@ if __name__ == "__main__":
     #         )
 
     # Payments
-    elif form == "Payments_Data_Import":
-        uploadForm(
-            form="Payments_Data_Import",
-            file="payments",
-            header_name="payments",
-            int_cols = [
-                'account_number',
-                'phone',
-                ],
-            slice_length = 1200,
-            field_cutoff=['payment_note']
-            )
+    # elif form == "Payments_Data_Import":
+    #     uploadForm(
+    #         form="Payments_Data_Import",
+    #         file="payments",
+    #         header_name="payments",
+    #         int_cols = [
+    #             'account_number',
+    #             'phone',
+    #             ],
+    #         slice_length = 1200,
+    #         field_cutoff=['payment_note']
+    #         )
 
     # Replaced_Units_Record
     elif form == "Replaced_Units_Record":
@@ -241,17 +241,17 @@ if __name__ == "__main__":
             )
 
     # Stock_Data_Import
-    elif form == "Stock_Data_Import":
-        uploadForm(
-            form="Stock_Data_Import",
-            file="stock_unit_statuses",
-            header_name="stock",
-            int_cols = [
-                'account_number',
-                'unit_number',
-                ],
-            slice_length = 2000,
-            )
+    # elif form == "Stock_Data_Import":
+    #     uploadForm(
+    #         form="Stock_Data_Import",
+    #         file="stock_unit_statuses",
+    #         header_name="stock",
+    #         int_cols = [
+    #             'account_number',
+    #             'unit_number',
+    #             ],
+    #         slice_length = 2000,
+    #         )
 
     # Dolo import
     elif form == "Dolo_Scores":
