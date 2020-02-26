@@ -162,8 +162,11 @@ except Exception as e:
     traceback.print_exc()
     gmail.quick_send(
         to = 'ben@yellow.africa, ross@yellow.africa',
-        subject = f"Google Sheet sync failed: {sheetID}",
-        text = f"See AWS log for details <br>{e}",
+        subject = f"Google Sheet sync failed",
+        text = f"""See AWS log sheetsync.log for details
+            
+            {e}
+            """,
     )  
 
 # Log timestamp
