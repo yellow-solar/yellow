@@ -49,30 +49,31 @@ GSHEETS = {
         },
     },
 }
-# Initialise objects required for integration
-# Create google sheets objects
-gsheet = GSheet('config/agent-recruitment-sync-c26ca6015141.json')
-gmail = Gmail('config/mail-93851bb46b8d.json', 'system@yellow.africa')
 
-# Fetch zoho cfg and setup API connection
-with open('config/config.json', 'r') as f:
-    zoho_cfg = json.load(f)['zoho']
-zoho = ZohoAPI(zoho_cfg['zc_ownername'], zoho_cfg['authtoken'], zoho_cfg['app'])
-
-# Log timestamp
-print("Start: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-
-# Get dictionary of recruitment test results - all ranges
-# more efficient to one query to google and process on this side after
-# NB: ASSUMES GOOGLE SHEET FORM IS NAMED THE SAME AS ZOHO
 try:
-    print(f"Downloading sheets tables into dataframe...")
-    # Loop through all sheets in the Config table
-    for sheetID in GSHEETS.keys():
-        # Set config variable
-        SHEETS_CONFIG = GSHEETS.get(sheetID)
-        # Print sheet/form names configured in the Google Sheet
-        print([form for form in SHEETS_CONFIG.keys()])
+    # Initialise objects required for integration
+    # Create google sheets objects
+    gsheet = GSheet('config/agent-recruitment-sync-c26ca6015141.json')
+    gmail = Gmail('config/mail-93851bb46b8d.json', 'system@yellow.africa')
+
+    # Fetch zoho cfg and setup API connection
+    with open('config/config.json', 'r') as f:
+        zoho_cfg = json.load(f)['zoho']
+    zoho = ZohoAPI(zoho_cfg['zc_ownername'], zoho_cfg['authtoken'], zoho_cfg['app'])
+
+    # Log timestamp
+    print("Start: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+    # Get dictionary of recruitment test results - all ranges
+    # more efficient to one query to google and process on this side after
+    # NB: ASSUMES GOOGLE SHEET FORM IS NAMED THE SAME AS ZOHO
+        print(f"Downloading sheets tables into dataframe...")
+        # Loop through all sheets in the Config table
+        for sheetID in GSHEETS.keys():
+            # Set config variable
+            SHEETS_CONFIG = GSHEETS.get(sheetID)
+            # Print sheet/form names configured in the Google Sheet
+            print([form for form in SHEETS_CONFIG.keys()])
         # Download batch result from google using the API function
         batch_result = gsheet.readBatchDFs(
             sheetID = sheetID, 
