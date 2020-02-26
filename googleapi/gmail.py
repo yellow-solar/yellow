@@ -104,6 +104,9 @@ class Gmail():
             print(f"An error occurred: {error}")
             raise
 
+    def quick_send(self, to, subject, text):
+        msg = self.create_message(self.user, to, subject, text)
+        self.send_message(msg)
 
 # Credentials object creation with config file
 
