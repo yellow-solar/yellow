@@ -60,3 +60,31 @@ VALUES ('MP190927.1359.G08904','Down payment', 'Newshirt')
 -- ;
 
 
+/* INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+VALUES ('MP200207.1849.D93794','Manual', 'Newshirt')
+;
+
+
+INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+VALUES ('MP200205.2043.D13555','Manual', 'Newshirt')
+;
+
+
+INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+VALUES ('MP200205.1257.G15911','Manual', 'Newshirt')
+;
+
+
+INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+VALUES ('MP200106.1634.G56339','Manual', 'Newshirt')
+;
+
+
+INSERT INTO Finance.mobile_manual_recon_trns (provider_id, note, added_user)
+VALUES ('MP200106.1631.D25029','Manual', 'Newshirt')
+; */
+
+
+
+
+
