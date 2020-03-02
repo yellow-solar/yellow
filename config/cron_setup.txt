@@ -1,23 +1,17 @@
 # Angaza jobs
-25 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.angazapull                          >> ../.log/angaza-sync.log 2>&1
+#25 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.angazapull                          >> ../.log/angaza-sync.log 2>&1
 
-#Zoho upload jobs
-30 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Accounts_Data_Import          >> ../.log/zoho-sync.log 2>&1
-29 6,9,12,15,18 * * *   cd sync && ~/.venv/sync/bin/python sync.py      >> ../.log/zoho-sync2.log 2>&1
+#Zoho upload jobs - all day
+29 6,9,12,15,18 * * *   cd sync && ~/.venv/sync/bin/python sync.py      >> ../.log/zoho-sync.log 2>&1
 
-
-# 1am jobs
-55 0 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.angazapull                          >> ../.log/angaza-sync.log 2>&1
-
-#Zoho upload jobs
-0 1 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.zohoupload Accounts_Data_Import          >> ../.log/zoho-sync.log 2>&1
-2 1 * * *   cd sync && ~/.venv/sync/bin/python sync.py     >> ../.log/zoho-sync2.log 2>&1
+#Zoho upload jobs - post midnight
+2 1 * * *   cd sync && ~/.venv/sync/bin/python sync.py     >> ../.log/zoho-sync.log 2>&1
 
 # Payment profiles calc
-35 6,9,12,15,18 * * *    cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.periodsupdate               >> ../.log/yellow-jobs.log 2>&1
+# 35 6,9,12,15,18 * * *    cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.periodsupdate               >> ../.log/yellow-jobs.log 2>&1
 
 # Sheets sync
-0 */2 * * * cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.sheetsync                                >> ../.log/sheetsync.log 2>&1
+0 */1 * * * cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.sheetsync                                >> ../.log/sheetsync.log 2>&1
 
 # Airtel statement import
 */2 * * * * cd yellow && ~/.venv/data-jobs/bin/python -m statements.mobilestatements                         >> ../.log/mobilestatements.log 2>&1
