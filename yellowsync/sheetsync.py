@@ -48,6 +48,14 @@ GSHEETS = {
         'update':True,
         },
     },
+    # Exchange rates  
+    '1FOsYC-eWEPmvGlPypua59GmbY_oBXSKRbKmf8J-zlVg':{
+        'FX_Rates':{
+        'report':'FX_Rates_Report',
+        'index_col':'Date1',
+        'update':True,
+        },
+    },
 }
 # Initialise objects required for integration
 # Create google sheets objects
