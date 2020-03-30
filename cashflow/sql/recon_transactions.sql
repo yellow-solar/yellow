@@ -35,11 +35,13 @@ from
 	(
 	select *
 	from Finance.mobile m
+    
 	left join Angaza.payments p 
 		on (p.provider_transaction = m.provider_id
 			or concat('MP', REGEXP_SUBSTR(p.payment_note, '[123][0-9]{5}'), '.', REGEXP_SUBSTR(p.payment_note, '[0-9]{4}.[a-zA-Z][0-9]{5}')) = m.provider_id)
 		and p.reversal is null
-	where m.trn_type = 'MR'
+	where m.trn_timestamp >= CURDATE() - INTERVAL 60 DAY
+		and m.trn_type = 'MR'
 		and m.trn_status not like 'Transaction F%'
 		and m.trn_ref_number not like 'R%'	
         
@@ -50,7 +52,8 @@ from
 	right join (select * from Angaza.payments i where i.recorded_utc > cast('2019-07-11 00:00:00' as datetime)) p 
 		on (p.provider_transaction = m.provider_id
 			or concat('MP', REGEXP_SUBSTR(p.payment_note, '[123][0-9]{5}'), '.', REGEXP_SUBSTR(p.payment_note, '[0-9]{4}.[a-zA-Z][0-9]{5}')) = m.provider_id)
-	where m.provider_id is null
+	where m.trn_timestamp >= CURDATE() - INTERVAL 60 DAY
+		and m.provider_id is null
 	) x
     
 left join Angaza.receipts r

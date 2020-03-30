@@ -1,3 +1,4 @@
+drop view if exists Finance.standard_bank_account_trns;
 create view Finance.standard_bank_account_trns as
 select Account_Paid_From
 	, Account_Paid_Into 

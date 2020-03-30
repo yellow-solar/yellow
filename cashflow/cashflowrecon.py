@@ -65,7 +65,7 @@ def cashflowDataSync():
 if __name__ == "__main__":
     # Log timestamp
     print("Start: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S")) 
-    
+
     #  Run sync if flag found
     if len(sys.argv) > 1:
         sync = sys.argv[1]
@@ -81,7 +81,7 @@ if __name__ == "__main__":
         f"{db_cfg['driver']}{db_cfg['user']}:{db_cfg['passwd']}@{db_cfg['host']}/"
         # , echo=True
         )
-    
+
     # Open connection to DB to execute recon
     with engine.connect() as conn:
         # create staging table in sandbox
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         with open("cashflow/sql/standard_bank_account_trns.sql", 'r') as sql:
             query = sql.read().replace('%','%%')
             resultProxy = conn.execute(query)
-    
+
         # update the views
         print("Summary query...")
         with open("cashflow/sql/all_accounts_balance_daily.sql", 'r') as sql:
