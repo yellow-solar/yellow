@@ -1,4 +1,3 @@
-drop view if exists Finance.standard_bank_account_trns;
 create view Finance.standard_bank_account_trns as
 select Account_Paid_From
 	, Account_Paid_Into 
@@ -32,7 +31,7 @@ from
 		,	Payment_Date Trn_Date
 		, 	-Amount_Paid Amount_MWK
 		, 	Payment_Type Cashflow_Category
-		,	concat(Agent_Angaza_ID,'-', Yellow_Agent_ID,'-', Agent_Name) Description
+		,	concat(Yellow_Agent_ID,'-', Agent_Name) Description
 		,	Allowance_Type Comments
 
 	from Zoho.All_Agent_Payments a
@@ -41,5 +40,3 @@ from
 
 order by x.Trn_Date desc
 ;
-
-select * from Finance.standard_bank_account_trns;
