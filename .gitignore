@@ -2,7 +2,7 @@
 config/*.json
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
+*/__pycache__/
 *.py[cod]
 *$py.class
 
@@ -130,3 +130,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+yellowsync/__pycache__/sheetsync.cpython-36.pyc
+yellowsync/__pycache__/sheetsync.cpython-36.pyc
