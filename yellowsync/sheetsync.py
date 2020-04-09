@@ -42,9 +42,9 @@ GSHEETS = {
     },
     # Agent test scores - 
     '1UuuMq00xo0WWGGXdOtaqq-TPaVjn0l6YLrv4h5U6nq4':{
-        'Agent_Learning_Management_Test_Scores':{
-        'report':'All_Agent_Learning_Management_Test_Scores',
-        'index_col':'ConcatRecordID',
+        'Learning_Management_Test_Scores':{
+        'report':'All_Learning_Management_Test_Scores',
+        'index_col':'Response_ID',
         'update':True,
         },
     },
@@ -131,12 +131,12 @@ try:
                 intersect = google_df.index.intersection(zoho_df.index) 
                 # Create insert dataframe
                 insert_df = google_df[~google_df.index.isin(zoho_df.index)]
-                # Create update dataframe by comparing the intersection 
+                # TODO: Create update dataframe by comparing the intersection 
                 # to pick up any changed rows 
-                compare_df = ~(google_df.loc[intersect] == 
-                                zoho_df.loc[intersect, google_df.columns])*1
-                # compare_df.to_csv('compare.csv')
-                update_df = google_df.loc[intersect].loc[(compare_df.sum(axis=1)>0)]
+                # compare_df = ~(google_df.loc[intersect] == 
+                #                 zoho_df.loc[intersect, google_df.columns])*1
+                # # compare_df.to_csv('compare.csv')
+                update_df = google_df[google_df.index.isin(zoho_df.index)]
             else:
                 insert_df = google_df
                 update_df = pd.DataFrame()
