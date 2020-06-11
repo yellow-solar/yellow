@@ -1,11 +1,5 @@
-# Angaza jobs
-#25 6,9,12,15,18 * * *   cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.angazapull                          >> ../.log/angaza-sync.log 2>&1
-
 #Zoho upload jobs - all day
 30 */1 * * *   cd sync && ~/.venv/sync/bin/python sync.py      >> ../.log/zoho-sync.log 2>&1
-
-#Zoho upload jobs - post midnight
-2 1 * * *   cd sync && ~/.venv/sync/bin/python sync.py     >> ../.log/zoho-sync.log 2>&1
 
 # Payment profiles calc
 # 35 6,9,12,15,18 * * *    cd yellow && ~/.venv/data-jobs/bin/python -m yellowsync.periodsupdate               >> ../.log/yellow-jobs.log 2>&1
