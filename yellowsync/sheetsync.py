@@ -32,8 +32,8 @@ from googleapi.gmail import Gmail
 GSHEETS = {
     # Recruitment tests ID
     '1l0rxY-SR0e9vW8n4Ox4-EwRC-H3JvdoAL6fDb3Z86FY':{
-        'Agent_Recruitment_Test2':{
-            'report':'Agent_Recruitment_Test2_Report',
+        'Yellow_Agent_Recruitment_Test2':{
+            'report':'Yellow_Agent_Recruitment_Test2_Report',
             'columns': ['Timestamp','Score','Input your Yellow Agent ID'],
             'timestamps': ['Timestamp'],
             'index_col':'Timestamp',
